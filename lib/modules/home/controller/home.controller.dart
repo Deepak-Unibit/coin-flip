@@ -26,7 +26,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   @override
   void onInit() {
-    _controller.value = AnimationController(vsync: this, duration: const Duration(milliseconds: 3000));
+    _controller.value = AnimationController(vsync: this, duration: const Duration(milliseconds: 0));
     animation = Tween(end: 30.0, begin: 0.0).animate(_controller.value as Animation<double>)
       ..addListener(
         () {},
@@ -53,9 +53,33 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     selectedType.value = value;
   }
 
+  bool isFlipping = false;
   void onFlipCoin() {
+    if(isFlipping) {
+      return;
+    }
+    _controller.value = AnimationController(vsync: this, duration: const Duration(milliseconds: 3000));
+    animation = Tween(end: 30.0, begin: 0.0).animate(_controller.value as Animation<double>)
+      ..addListener(
+        () {},
+      )
+      ..addStatusListener(
+        (status) {
+          this.status = status;
+          if (status == AnimationStatus.completed) {
+            _controller.value?.stop(); // Stop after completing 5 rotations
+            showConfetti.value = true;
+            Future.delayed(4.seconds, () {
+              showConfetti.value = false;
+              isFlipping = false;
+            });
+          }
+        },
+      );
     _controller.value?.reset();
     _controller.value?.forward();
+
+    isFlipping = true;
 
     resultCoin.value = selectedType.value;
 
