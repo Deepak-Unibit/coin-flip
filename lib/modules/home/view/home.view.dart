@@ -49,13 +49,13 @@ class HomeView extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 15),
                           const Text(
                             "COIN FLIP",
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
                           ),
-                          const SizedBox(height: 50),
+                          const SizedBox(height: 30),
                           Obx(
                             () => AnimatedBuilder(
                                 animation: homeController.controller!,
