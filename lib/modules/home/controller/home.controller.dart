@@ -9,11 +9,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   AnimationStatus status = AnimationStatus.dismissed;
   RxInt resultCoin = 0.obs;
   RxBool showConfetti = false.obs;
+  int totalAmount = 0;
 
   // Others
   TextEditingController amountController = TextEditingController(text: "10");
   RxInt selectedType = 0.obs;
-  List<dynamic> amountList = [10, 25, 50, "Max"];
+  List<dynamic> amountList = ["10", "25", "50", "Max"];
 
   @override
   void onInit() {
@@ -84,10 +85,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void onAmountSelect(int index) {
-    if(amountList[index] == "Max") {
+    if (amountList[index] == "Max") {
       amountController.text = "100";
       return;
     }
-    amountController.text = (int.parse(amountController.text) + amountList[index]) as String;
+    amountController.text =  amountList[index];
   }
 }

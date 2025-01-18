@@ -221,7 +221,7 @@ class HomeView extends StatelessWidget {
                                           color: context.theme.colorScheme.outline,
                                         ),
                                         child: Text(
-                                          e!="Max" ? "+$e" : e,
+                                          e,
                                           style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w500,
@@ -234,7 +234,7 @@ class HomeView extends StatelessWidget {
                                   .toList(),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 20),
                           MaterialButton(
                             onPressed: () => homeController.onFlipCoin(),
                             minWidth: 0,
