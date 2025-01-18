@@ -67,8 +67,8 @@ class HomeView extends StatelessWidget {
                                       ..rotateY(math.pi * homeController.animation.value),
                                     child: Container(
                                       // color: Colors.grey,
-                                      height: 120,
-                                      width: 120,
+                                      height: 100,
+                                      width: 100,
                                       alignment: Alignment.center,
                                       child: Image.asset(
                                         homeController.resultCoin.value == 0

@@ -65,7 +65,7 @@ class ThemesUtil {
           Radius.circular(10),
         ),
       ),
-      yearForegroundColor: MaterialStatePropertyAll(Color(0xFF0F1011)),
+      yearForegroundColor: WidgetStatePropertyAll(Color(0xFF0F1011)),
       dividerColor: Color(0xFFA4AAB1),
     ),
   );

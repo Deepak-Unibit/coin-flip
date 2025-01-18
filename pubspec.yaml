@@ -31,6 +31,11 @@ dependencies:
 #  flame: ^1.7.0
   intl: ^0.19.0
   image_network: ^2.5.6
+  flutter_3d_controller: ^2.1.0
+  vector_math: ^2.1.4
+  flutter_inappwebview: ^6.1.5
+  path: ^1.9.0
+  model_viewer_plus: ^1.9.1
 
   cupertino_icons: ^1.0.8
 

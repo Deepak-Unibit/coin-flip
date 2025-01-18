@@ -57,7 +57,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (isFlipping.value) {
       return;
     }
-    _controller.value = AnimationController(vsync: this, duration: const Duration(milliseconds: 3000));
+    _controller.value = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
     animation = Tween(end: 30.0, begin: 0.0).animate(_controller.value as Animation<double>)
       ..addListener(
         () {},
@@ -82,12 +82,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     resultCoin.value = selectedType.value;
 
-    Future.delayed(1500.milliseconds, () {
+    Future.delayed(800.milliseconds, () {
       resultCoin.value = resultCoin.value == 0 ? 1 : 0;
-      print("1 ${resultCoin.value}");
-      Future.delayed(1200.milliseconds, () {
+      Future.delayed(500.milliseconds, () {
         resultCoin.value = resultCoin.value == 0 ? 1 : 0;
-        print("2 ${resultCoin.value}");
       });
     });
   }
