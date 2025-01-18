@@ -1,28 +1,19 @@
-import 'package:flutter/animation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
-  RxInt coinStatus = 0.obs; // 0 - Head | 1 - Tail | 2 - Rotating
-
-  onFlip() {
-    if (coinStatus.value != 2) {
-      coinStatus.value = 2;
-      Future.delayed(
-        2.seconds,
-        () {
-          coinStatus.value = 1;
-        },
-      );
-    }
-    return;
-  }
-
+  // Animation
   final Rxn<AnimationController> _controller = Rxn<AnimationController>();
   AnimationController? get controller => _controller.value;
   late Animation animation;
   AnimationStatus status = AnimationStatus.dismissed;
   RxInt resultCoin = 0.obs;
   RxBool showConfetti = false.obs;
+
+  // Others
+  TextEditingController amountController = TextEditingController(text: "10");
+  RxInt selectedType = 0.obs;
+  List<dynamic> amountList = [10, 25, 50, "Max"];
 
   @override
   void onInit() {
@@ -48,14 +39,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     super.onInit();
   }
 
-  RxInt selectedType = 0.obs;
   void onSelectType(int value) {
     selectedType.value = value;
   }
 
   bool isFlipping = false;
   void onFlipCoin() {
-    if(isFlipping) {
+    if (isFlipping) {
       return;
     }
     _controller.value = AnimationController(vsync: this, duration: const Duration(milliseconds: 3000));
@@ -91,5 +81,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         print("2 ${resultCoin.value}");
       });
     });
+  }
+
+  void onAmountSelect(int index) {
+    if(amountList[index] == "Max") {
+      amountController.text = "100";
+      return;
+    }
+    amountController.text = (int.parse(amountController.text) + amountList[index]) as String;
   }
 }

@@ -45,7 +45,7 @@ class HomeView extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.all(Radius.circular(20)),
                         color: const Color(0xFF191A2C).withOpacity(1),
-                        border: Border.all(color: const Color(0xFF1E2234)),
+                        border: Border.all(color: context.theme.colorScheme.outline),
                       ),
                       child: Column(
                         children: [
@@ -107,8 +107,8 @@ class HomeView extends StatelessWidget {
                                                   const Color(0xFF8C60FE),
                                                 ]
                                               : [
-                                                  const Color(0xFF111825),
-                                                  const Color(0xFF111825),
+                                                  context.theme.colorScheme.primaryContainer,
+                                                  context.theme.colorScheme.primaryContainer,
                                                 ],
                                         ),
                                         border: Border.all(color: const Color(0xFFA988FC).withOpacity(homeController.selectedType.value == 0 ? 1 : 0.1)),
@@ -192,10 +192,47 @@ class HomeView extends StatelessWidget {
                           ),
                           const SizedBox(height: 30),
                           TextFieldComponent(
-                            textEditingController: TextEditingController(),
+                            textEditingController: homeController.amountController,
                             hintText: "Enter Amount",
                             textInputType: TextInputType.number,
                             maxLength: 5,
+                          ),
+                          const SizedBox(height: 10),
+                          Align(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: Wrap(
+                              runAlignment: WrapAlignment.start,
+                              spacing: 10,
+                              children: homeController.amountList
+                                  .map(
+                                    (e) => MaterialButton(
+                                      onPressed: () => homeController.onAmountSelect(homeController.amountList.indexOf(e)),
+                                      minWidth: 0,
+                                      padding: EdgeInsets.zero,
+                                      visualDensity: VisualDensity.compact,
+                                      highlightColor: Colors.transparent,
+                                      splashColor: Colors.transparent,
+                                      child: Container(
+                                        height: 40,
+                                        width: 60,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                          color: context.theme.colorScheme.outline,
+                                        ),
+                                        child: Text(
+                                          e!="Max" ? "+$e" : e,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                            color: context.theme.colorScheme.onSurface.withOpacity(0.2),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
                           ),
                           const SizedBox(height: 10),
                           MaterialButton(
@@ -234,51 +271,13 @@ class HomeView extends StatelessWidget {
               () => homeController.showConfetti.value
                   ? LottieHelper.lottie(
                       animationAsset: AssetsUtil.getConfettiLottie(),
-                      repeat: true,
+                      repeat: false,
                     )
                   : const SizedBox.shrink(),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class CoinFlipUsingImageGIF extends StatelessWidget {
-  const CoinFlipUsingImageGIF({
-    super.key,
-    required this.homeController,
-  });
-
-  final HomeController homeController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Obx(
-          () => Padding(
-            padding: EdgeInsets.only(bottom: homeController.coinStatus.value == 2 ? 0 : 25),
-            child: Image.asset(
-              homeController.coinStatus.value == 0
-                  ? AssetsUtil.getHead()
-                  : homeController.coinStatus.value == 1
-                      ? AssetsUtil.getTail()
-                      : AssetsUtil.getRotatingCoin(),
-              height: homeController.coinStatus.value == 2 ? 150 : 100,
-              width: homeController.coinStatus.value == 2 ? 150 : 100,
-            ),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            homeController.onFlip();
-          },
-          child: const Text('Flip Coin'),
-        ),
-      ],
     );
   }
 }

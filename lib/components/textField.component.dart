@@ -11,7 +11,7 @@ class TextFieldComponent extends StatelessWidget {
     required this.maxLength,
     this.maxLines = 1,
     this.height = 50,
-   this.textInputAction,
+    this.textInputAction,
   });
 
   final TextEditingController textEditingController;
@@ -35,10 +35,17 @@ class TextFieldComponent extends StatelessWidget {
         textInputAction: textInputAction,
         decoration: InputDecoration(
           filled: true,
-          fillColor: context.theme.colorScheme.onSurface.withOpacity(0.1),
+          fillColor: context.theme.colorScheme.primaryContainer,
           counterText: "",
-          hintText: hintText,
+          // hintText: hintText,
           hintStyle: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+            color: context.theme.colorScheme.onSurface.withOpacity(0.2),
+          ),
+          alignLabelWithHint: true,
+          labelText: "Enter Amount",
+          labelStyle: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w400,
             color: context.theme.colorScheme.onSurface.withOpacity(0.2),
@@ -51,18 +58,18 @@ class TextFieldComponent extends StatelessWidget {
               width: 0,
             ),
           ),
-          enabledBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(
-              color: Colors.transparent,
-              width: 0,
+              color: context.theme.colorScheme.outline,
+              width: 1,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(
-              color: context.theme.colorScheme.onSurface.withOpacity(0.5),
-              width: 1,
+              color: context.theme.colorScheme.outline,
+              width: 2,
             ),
           ),
         ),
