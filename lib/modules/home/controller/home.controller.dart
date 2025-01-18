@@ -44,9 +44,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     selectedType.value = value;
   }
 
-  bool isFlipping = false;
+  void onAmountSelect(int index) {
+    if (amountList[index] == "Max") {
+      amountController.text = "100";
+      return;
+    }
+    amountController.text = amountList[index];
+  }
+
+  RxBool isFlipping = false.obs;
   void onFlipCoin() {
-    if (isFlipping) {
+    if (isFlipping.value) {
       return;
     }
     _controller.value = AnimationController(vsync: this, duration: const Duration(milliseconds: 3000));
@@ -60,9 +68,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           if (status == AnimationStatus.completed) {
             _controller.value?.stop(); // Stop after completing 5 rotations
             showConfetti.value = true;
-            Future.delayed(4.seconds, () {
+            Future.delayed(3.5.seconds, () {
               showConfetti.value = false;
-              isFlipping = false;
+              isFlipping.value = false;
             });
           }
         },
@@ -70,7 +78,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     _controller.value?.reset();
     _controller.value?.forward();
 
-    isFlipping = true;
+    isFlipping.value = true;
 
     resultCoin.value = selectedType.value;
 
@@ -82,13 +90,5 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         print("2 ${resultCoin.value}");
       });
     });
-  }
-
-  void onAmountSelect(int index) {
-    if (amountList[index] == "Max") {
-      amountController.text = "100";
-      return;
-    }
-    amountController.text =  amountList[index];
   }
 }

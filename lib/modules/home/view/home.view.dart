@@ -242,20 +242,24 @@ class HomeView extends StatelessWidget {
                             highlightColor: Colors.transparent,
                             splashColor: Colors.transparent,
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            child: Container(
-                              width: double.infinity,
-                              height: 50,
-                              alignment: Alignment.center,
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                                color: Color(0xFFE59E05),
-                              ),
-                              child: const Text(
-                                "Flip Coin",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
+                            child: Obx(
+                              () => Container(
+                                width: double.infinity,
+                                height: 50,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                  color: homeController.isFlipping.value
+                                      ? context.theme.colorScheme.onSurface.withOpacity(0.25)
+                                      : const Color(0xFFE59E05),
+                                ),
+                                child: const Text(
+                                  "Flip Coin",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
@@ -269,10 +273,13 @@ class HomeView extends StatelessWidget {
             ),
             Obx(
               () => homeController.showConfetti.value
-                  ? LottieHelper.lottie(
-                      animationAsset: AssetsUtil.getConfettiLottie(),
-                      repeat: false,
-                    )
+                  ? Padding(
+                padding: const EdgeInsets.only(top: 60),
+                    child: LottieHelper.lottie(
+                        animationAsset: AssetsUtil.getConfettiLottie(),
+                        repeat: false,
+                      ),
+                  )
                   : const SizedBox.shrink(),
             ),
           ],
