@@ -36,7 +36,7 @@ class HomeView extends StatelessWidget {
             Container(
               constraints: const BoxConstraints(maxWidth: 450),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.all(10),
                 child: ListView(
                   children: [
                     Container(
@@ -56,6 +56,7 @@ class HomeView extends StatelessWidget {
                             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
                           ),
                           const SizedBox(height: 30),
+                          const SizedBox(height: 30),
                           Obx(
                             () => AnimatedBuilder(
                                 animation: homeController.controller!,
@@ -64,19 +65,26 @@ class HomeView extends StatelessWidget {
                                     alignment: FractionalOffset.center,
                                     transform: Matrix4.identity()
                                       ..setEntry(3, 2, 0.00005)
-                                      ..rotateY(math.pi * homeController.animation.value),
+                                      ..rotateY(-math.pi * homeController.animation.value),
                                     child: Container(
                                       // color: Colors.grey,
-                                      height: 100,
+                                      height: 150,
                                       width: 100,
                                       alignment: Alignment.center,
-                                      child: Image.asset(
-                                        homeController.resultCoin.value == 0
-                                            ? AssetsUtil.getHead()
-                                            : homeController.resultCoin.value == 1
-                                                ? AssetsUtil.getDollar()
-                                                : AssetsUtil.getBackground(),
-                                      ),
+                                      child: (homeController.animation.value < 0.5 ||
+                                              [
+                                                [1.5, 2.5],
+                                                [3.5, 4.5],
+                                                [5.5, 6.5],
+                                                [7.5, 8.5],
+                                                [9.5, 10.5]
+                                              ].any((range) => homeController.animation.value > range[0] && homeController.animation.value < range[1]))
+                                          ? Image.asset(AssetsUtil.getHead())
+                                          : Transform(
+                                              alignment: Alignment.center,
+                                              transform: Matrix4.rotationY(3.14159),
+                                              child: Image.asset(AssetsUtil.getDollar()),
+                                            ),
                                     ),
                                   );
                                 }),
@@ -249,9 +257,7 @@ class HomeView extends StatelessWidget {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                  color: homeController.isFlipping.value
-                                      ? context.theme.colorScheme.onSurface.withOpacity(0.25)
-                                      : const Color(0xFFE59E05),
+                                  color: homeController.isFlipping.value ? context.theme.colorScheme.onSurface.withOpacity(0.25) : const Color(0xFFE59E05),
                                 ),
                                 child: const Text(
                                   "Flip Coin",
@@ -274,12 +280,12 @@ class HomeView extends StatelessWidget {
             Obx(
               () => homeController.showConfetti.value
                   ? Padding(
-                padding: const EdgeInsets.only(top: 60),
-                    child: LottieHelper.lottie(
+                      padding: const EdgeInsets.only(top: 60),
+                      child: LottieHelper.lottie(
                         animationAsset: AssetsUtil.getConfettiLottie(),
                         repeat: false,
                       ),
-                  )
+                    )
                   : const SizedBox.shrink(),
             ),
           ],
