@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_3d_controller/flutter_3d_controller.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 class FlipView extends StatelessWidget {
   FlipView({super.key});
@@ -21,14 +22,14 @@ class FlipView extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 50),
-            SizedBox(
+            const SizedBox(
               height: 200,
-              child: Flutter3DViewer(
+              child: ModelViewer(
                 src: "assets/lotties/model.glb",
-                onLoad: (modelAddress) {
-                  Logger().i(modelAddress);
-                  // return modelAddress;
-                },
+                autoPlay: true,
+                ar: false,
+                animationCrossfadeDuration: 200,
+                cameraControls: true,
               ),
             ),
             const SizedBox(height: 50),

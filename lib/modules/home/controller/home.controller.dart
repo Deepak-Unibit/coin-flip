@@ -57,7 +57,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (isFlipping.value) {
       return;
     }
-    _controller.value = AnimationController(vsync: this, duration: const Duration(seconds: 4));
+    _controller.value = AnimationController(vsync: this, duration: Duration(seconds: selectedType.value == 0 ? 4 : 3));
     animation = Tween(end: selectedType.value == 0 ? 6.0 : 11.0, begin: 0.0).animate(_controller.value as Animation<double>)
       ..addListener(
         () {},
