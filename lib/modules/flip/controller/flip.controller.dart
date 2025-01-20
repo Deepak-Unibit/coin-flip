@@ -23,14 +23,17 @@ class FlipController extends GetxController with GetTickerProviderStateMixin {
   }
 
   int flag = 0;
+  RxBool autoRotate = false.obs;
   void flipCard() async {
-    if (flag == 0) {
-      flag = 1;
-      animationController.value?.forward();
-    }
-    else {
-      flag = 0;
-      animationController.value?.reverse();
-    }
+    autoRotate.value = !autoRotate.value;
+
+    // if (flag == 0) {
+    //   flag = 1;
+    //   animationController.value?.forward();
+    // }
+    // else {
+    //   flag = 0;
+    //   animationController.value?.reverse();
+    // }
   }
 }

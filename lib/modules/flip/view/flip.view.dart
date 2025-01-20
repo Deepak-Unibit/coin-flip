@@ -1,8 +1,6 @@
 import 'package:flip_coin/modules/flip/controller/flip.controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_3d_controller/flutter_3d_controller.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 class FlipView extends StatelessWidget {
@@ -22,14 +20,19 @@ class FlipView extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 50),
-            const SizedBox(
+            SizedBox(
               height: 200,
-              child: ModelViewer(
-                src: "assets/lotties/model.glb",
-                autoPlay: true,
-                ar: false,
-                animationCrossfadeDuration: 200,
-                cameraControls: true,
+              child: Obx(
+                () => ModelViewer(
+                  key: ValueKey(flipController.autoRotate.value),
+                  src: "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
+                  animationCrossfadeDuration: 200,
+                  cameraControls: true,
+                  autoRotate: flipController.autoRotate.value,
+                  rotationPerSecond: '180deg',
+                  autoRotateDelay: 0,
+                  touchAction: TouchAction.panY,
+                ),
               ),
             ),
             const SizedBox(height: 50),

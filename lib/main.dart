@@ -1,6 +1,4 @@
 import 'package:flip_coin/modules/flip/view/flip.view.dart';
-import 'package:flip_coin/modules/home/view/home.view.dart';
-import 'package:flip_coin/modules/viewer/view/viewer.view.dart';
 import 'package:flip_coin/utils/theme.util.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemesUtil.light,
-      home: HomeView(),
+      home: FlipView(),
     );
   }
 }
