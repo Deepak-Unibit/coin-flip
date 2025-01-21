@@ -56,40 +56,67 @@ class HomeView extends StatelessWidget {
                             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
                           ),
                           const SizedBox(height: 30),
-                          const SizedBox(height: 30),
-                          Obx(
-                            () => AnimatedBuilder(
-                                animation: homeController.controller!,
-                                builder: (context, child) {
-                                  return Transform(
-                                    alignment: FractionalOffset.center,
-                                    transform: Matrix4.identity()
-                                      ..setEntry(3, 2, 0.00005)
-                                      ..rotateY(-math.pi * homeController.animation.value),
-                                    child: Container(
-                                      // color: Colors.grey,
-                                      height: 150,
-                                      width: 100,
-                                      alignment: Alignment.center,
-                                      child: (homeController.animation.value < 0.5 ||
-                                              [
-                                                [1.5, 2.5],
-                                                [3.5, 4.5],
-                                                [5.5, 6.5],
-                                                [7.5, 8.5],
-                                                [9.5, 10.5]
-                                              ].any((range) => homeController.animation.value > range[0] && homeController.animation.value < range[1]))
-                                          ? Image.asset(AssetsUtil.getHead())
-                                          : Transform(
-                                              alignment: Alignment.center,
-                                              transform: Matrix4.rotationY(3.14159),
-                                              child: Image.asset(AssetsUtil.getDollar()),
-                                            ),
-                                    ),
-                                  );
-                                }),
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Opacity(
+                                opacity: 0.5,
+                                child: Image.asset(
+                                  AssetsUtil.getGlowingAnimation(),
+                                  height: 350,
+                                  width: 350,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Obx(
+                                () => AnimatedBuilder(
+                                    animation: homeController.controller!,
+                                    builder: (context, child) {
+                                      return Transform(
+                                        alignment: FractionalOffset.center,
+                                        transform: Matrix4.identity()
+                                          ..setEntry(3, 2, 0.00005)
+                                          ..rotateY(-math.pi * homeController.animation.value),
+                                        child: Container(
+                                          // color: Colors.grey,
+                                          height: 120,
+                                          width: 120,
+                                          alignment: Alignment.center,
+                                          child: (homeController.animation.value < 0.5 ||
+                                                  [
+                                                    [1.5, 2.5],
+                                                    [3.5, 4.5],
+                                                    [5.5, 6.5],
+                                                    [7.5, 8.5],
+                                                    [9.5, 10.5],
+                                                    [11.5, 12.5],
+                                                    [13.5, 14.5],
+                                                    [15.5, 16.5],
+                                                    [17.5, 18.5],
+                                                  ].any((range) => homeController.animation.value > range[0] && homeController.animation.value < range[1]))
+                                              ? Image.asset(
+                                                  AssetsUtil.get10RsHead(),
+                                                  height: 120,
+                                                  width: 120,
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : Transform(
+                                                  alignment: Alignment.center,
+                                                  transform: Matrix4.rotationY(3.14159),
+                                                  child: Image.asset(
+                                                    AssetsUtil.get10RsTail(),
+                                                    height: 120,
+                                                    width: 120,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 100),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -125,12 +152,12 @@ class HomeView extends StatelessWidget {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Image.asset(
-                                            AssetsUtil.getHead(),
+                                            AssetsUtil.get10RsHead(),
                                             height: 35,
                                             width: 35,
                                           ),
                                           Text(
-                                            "Rupee",
+                                            "Head",
                                             style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.w500,
@@ -144,7 +171,6 @@ class HomeView extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 15),
                               Flexible(
                                 child: MaterialButton(
                                   onPressed: () => homeController.onSelectType(1),
@@ -178,7 +204,7 @@ class HomeView extends StatelessWidget {
                                         children: [
                                           const SizedBox(width: 10),
                                           Text(
-                                            "Dollar",
+                                            "Tail",
                                             style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.w500,
@@ -186,7 +212,7 @@ class HomeView extends StatelessWidget {
                                             ),
                                           ),
                                           Image.asset(
-                                            AssetsUtil.getDollar(),
+                                            AssetsUtil.get10RsTail(),
                                             height: 35,
                                             width: 35,
                                           ),

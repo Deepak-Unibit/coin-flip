@@ -57,8 +57,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (isFlipping.value) {
       return;
     }
-    _controller.value = AnimationController(vsync: this, duration: Duration(seconds: selectedType.value == 0 ? 4 : 3));
-    animation = Tween(end: selectedType.value == 0 ? 6.0 : 11.0, begin: 0.0).animate(_controller.value as Animation<double>)
+    _controller.value = AnimationController(vsync: this, duration: const Duration(seconds: 5));
+    animation = Tween(end: selectedType.value == 0 ? 18.0 : 19.0, begin: 0.0).animate(
+      CurvedAnimation(parent: _controller.value!, curve: Curves.easeInOut),
+    )
       ..addListener(
         () {},
       )
@@ -66,7 +68,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         (status) {
           this.status = status;
           if (status == AnimationStatus.completed) {
-            _controller.value?.stop(); // Stop after completing 5 rotations
+            _controller.value?.stop();
             showConfetti.value = true;
             Future.delayed(3.5.seconds, () {
               showConfetti.value = false;
