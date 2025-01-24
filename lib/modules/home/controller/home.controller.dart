@@ -14,7 +14,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   // Others
   TextEditingController amountController = TextEditingController(text: "10");
   RxInt selectedType = 0.obs;
-  List<dynamic> amountList = ["10", "25", "50", "Max"];
+  List<int> amountList = [50, 100, 200, 500, 1000];
+  RxInt selectedAmount = 50.obs;
 
   @override
   void onInit() {
@@ -44,12 +45,22 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     selectedType.value = value;
   }
 
-  void onAmountSelect(int index) {
-    if (amountList[index] == "Max") {
-      amountController.text = "100";
+  void decreaseAmount() {
+    if(selectedAmount.value <= 10) {
       return;
     }
-    amountController.text = amountList[index];
+    selectedAmount.value = selectedAmount.value - 10;
+  }
+
+  void increaseAmount() {
+    if(selectedAmount.value >= 1000) {
+      return;
+    }
+    selectedAmount.value = selectedAmount.value + 10;
+  }
+
+  void onAmountSelect(int amount) {
+    selectedAmount.value = amount;
   }
 
   RxBool isFlipping = false.obs;
