@@ -64,14 +64,26 @@ class HomeView extends StatelessWidget {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  Opacity(
-                    opacity: 0.5,
-                    child: Image.asset(
-                      AssetsUtil.getGlowingAnimation(),
-                      height: 250,
-                      width: 250,
-                      fit: BoxFit.cover,
-                    ),
+                  Obx(
+                    () => homeController.showLottie.value
+                        ? LottieHelper.lottie(
+                            animationAsset: "assets/lotties/glowingAnimation.json",
+                            height: 200,
+                            width: 200,
+                          )
+                        : const SizedBox(
+                            height: 200,
+                            width: 200,
+                          ),
+                  ),
+                  Obx(
+                    () => homeController.showLottie.value
+                        ? Image.asset(
+                            "assets/images/glow.png",
+                            height: 168,
+                            width: 168,
+                          )
+                        : const SizedBox.shrink(),
                   ),
                   Obx(
                     () => AnimatedBuilder(
@@ -124,8 +136,8 @@ class HomeView extends StatelessWidget {
                         ? LottieHelper.lottie(
                             animationAsset: AssetsUtil.getConfettiLottie(),
                             repeat: false,
-                            height: 250,
-                            width: 250,
+                            height: 200,
+                            width: 200,
                           )
                         : const SizedBox.shrink(),
                   ),
@@ -198,7 +210,7 @@ class HomeView extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           Obx(
-                            ()=> Text(
+                            () => Text(
                               "₹${homeController.selectedAmount.value}",
                               style: TextStyle(
                                 fontSize: 18,

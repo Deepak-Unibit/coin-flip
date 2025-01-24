@@ -64,6 +64,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   RxBool isFlipping = false.obs;
+  RxBool showLottie = true.obs;
   void onFlipCoin() {
     if (isFlipping.value) {
       return;
@@ -81,6 +82,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           if (status == AnimationStatus.completed) {
             _controller.value?.stop();
             showConfetti.value = true;
+            showLottie.value = true;
             Future.delayed(3.5.seconds, () {
               showConfetti.value = false;
               isFlipping.value = false;
@@ -92,6 +94,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     _controller.value?.forward();
 
     isFlipping.value = true;
+    showLottie.value = false;
 
     resultCoin.value = selectedType.value;
 
