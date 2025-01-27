@@ -15,7 +15,6 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF181A26),
       body: Center(
         child: Container(
           width: double.infinity,
@@ -53,7 +52,7 @@ class HomeView extends StatelessWidget {
                     image: AssetsUtil.getHistoryIcon(),
                   ),
                   PrimaryButtonComponent(
-                    onClick: () {},
+                    onClick: () => homeController.onWalletClick(),
                     text: "Wallet",
                     image: AssetsUtil.getWalletIcon(),
                     btnColor1: context.theme.colorScheme.primary,

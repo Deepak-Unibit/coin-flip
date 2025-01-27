@@ -1,3 +1,4 @@
+import 'package:flip_coin/modules/wallet/view/wallet.view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -39,6 +40,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       );
 
     super.onInit();
+  }
+
+  void onWalletClick() {
+    Get.to(()=>WalletView());
   }
 
   void onSelectType(int value) {
