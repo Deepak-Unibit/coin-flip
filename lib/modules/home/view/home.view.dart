@@ -15,6 +15,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.theme.colorScheme.surfaceBright,
       body: Center(
         child: Container(
           width: double.infinity,
@@ -66,7 +67,7 @@ class HomeView extends StatelessWidget {
                   Obx(
                     () => homeController.showLottie.value
                         ? LottieHelper.lottie(
-                            animationAsset: "assets/lotties/glowingAnimation.json",
+                            animationAsset: AssetsUtil.getGlowingLottie(),
                             height: 200,
                             width: 200,
                           )
@@ -78,7 +79,7 @@ class HomeView extends StatelessWidget {
                   Obx(
                     () => homeController.showLottie.value
                         ? Image.asset(
-                            "assets/images/glow.png",
+                            AssetsUtil.getGlow(),
                             height: 168,
                             width: 168,
                           )
@@ -250,10 +251,10 @@ class HomeView extends StatelessWidget {
                               borderRadius: const BorderRadius.all(Radius.circular(100)),
                               side: BorderSide(color: context.theme.colorScheme.outline),
                             ),
-                            child: Icon(
-                              Icons.currency_rupee_rounded,
-                              size: 15,
-                              color: context.theme.colorScheme.onSurface,
+                            child: Image.asset(
+                              AssetsUtil.getBetCoinIcon(),
+                              height: 12,
+                              width: 12,
                             ),
                           ),
                         ],
@@ -292,7 +293,7 @@ class HomeView extends StatelessWidget {
               Row(
                 children: [
                   PrimaryButtonComponent(
-                    onClick: () {},
+                    onClick: () => homeController.onAutoPlayClick(),
                     image: AssetsUtil.getAutoPlayIcon(),
                     height: 40,
                     width: 50,
@@ -304,7 +305,7 @@ class HomeView extends StatelessWidget {
                   Flexible(
                     child: Obx(
                       () => PrimaryButtonComponent(
-                        onClick: () => homeController.onSelectType(0),
+                        onClick: () => homeController.onSelectCoinType(0),
                         image: AssetsUtil.getHead(),
                         imageSize: 25,
                         gap: 8,
@@ -322,7 +323,7 @@ class HomeView extends StatelessWidget {
                   Flexible(
                     child: Obx(
                       () => PrimaryButtonComponent(
-                        onClick: () => homeController.onSelectType(1),
+                        onClick: () => homeController.onSelectCoinType(1),
                         image: AssetsUtil.getTail(),
                         imageSize: 25,
                         gap: 8,
@@ -338,7 +339,7 @@ class HomeView extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               PrimaryButtonComponent(
                 onClick: homeController.onFlipCoin,
                 text: "Flip Coin",
@@ -348,7 +349,7 @@ class HomeView extends StatelessWidget {
                 btnColor1: context.theme.colorScheme.tertiary,
                 btnColor2: context.theme.colorScheme.tertiaryFixed,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 45),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -360,7 +361,7 @@ class HomeView extends StatelessWidget {
                       color: context.theme.colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 5),
                   MaterialButton(
                     onPressed: () {},
                     minWidth: 0,
@@ -370,8 +371,8 @@ class HomeView extends StatelessWidget {
                     splashColor: Colors.transparent,
                     child: Image.asset(
                       AssetsUtil.getFacebookIcon(),
-                      height: 30,
-                      width: 30,
+                      height: 24,
+                      width: 24,
                     ),
                   ),
                   const SizedBox(width: 2),
@@ -384,8 +385,8 @@ class HomeView extends StatelessWidget {
                     splashColor: Colors.transparent,
                     child: Image.asset(
                       AssetsUtil.getWhatsAppIcon(),
-                      height: 30,
-                      width: 30,
+                      height: 24,
+                      width: 24,
                     ),
                   ),
                   const SizedBox(width: 2),
@@ -398,8 +399,8 @@ class HomeView extends StatelessWidget {
                     splashColor: Colors.transparent,
                     child: Image.asset(
                       AssetsUtil.getXIcon(),
-                      height: 30,
-                      width: 30,
+                      height: 24,
+                      width: 24,
                     ),
                   ),
                 ],

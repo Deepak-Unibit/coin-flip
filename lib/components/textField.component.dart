@@ -37,20 +37,24 @@ class TextFieldComponent extends StatelessWidget {
           filled: true,
           fillColor: context.theme.colorScheme.primaryContainer,
           counterText: "",
-          // hintText: hintText,
           hintStyle: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w400,
-            color: context.theme.colorScheme.onSurface.withOpacity(0.2),
+            color: context.theme.colorScheme.onSurface.withOpacity(0.5),
           ),
           alignLabelWithHint: true,
           labelText: "Enter Amount",
           labelStyle: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w400,
-            color: context.theme.colorScheme.onSurface.withOpacity(0.2),
+            color: context.theme.colorScheme.onSurface.withOpacity(0.75),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          prefixIcon: Icon(
+            Icons.currency_rupee_rounded,
+            size: 18,
+            color: context.theme.colorScheme.onSurface.withOpacity(0.75),
+          ),
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(

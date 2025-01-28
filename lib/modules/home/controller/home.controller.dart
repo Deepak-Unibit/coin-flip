@@ -1,3 +1,4 @@
+import 'package:flip_coin/modules/home/components/autoPlayDialog.component.dart';
 import 'package:flip_coin/modules/wallet/view/wallet.view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -46,10 +47,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     Get.to(()=>WalletView());
   }
 
-  void onSelectType(int value) {
-    selectedType.value = value;
-  }
-
   void decreaseAmount() {
     if(selectedAmount.value <= 10) {
       return;
@@ -66,6 +63,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   void onAmountSelect(int amount) {
     selectedAmount.value = amount;
+  }
+
+  void onSelectCoinType(int value) {
+    selectedType.value = value;
+  }
+
+  void onAutoPlayClick() {
+    AutoPlayDialogComponent.show(
+      onSelectCoinType: onSelectCoinType,
+      selectedType: selectedType,
+    );
   }
 
   RxBool isFlipping = false.obs;
@@ -103,11 +111,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     resultCoin.value = selectedType.value;
 
-    // Future.delayed(800.milliseconds, () {
-    //   resultCoin.value = resultCoin.value == 0 ? 1 : 0;
-    //   Future.delayed(500.milliseconds, () {
-    //     resultCoin.value = resultCoin.value == 0 ? 1 : 0;
-    //   });
-    // });
   }
+
 }

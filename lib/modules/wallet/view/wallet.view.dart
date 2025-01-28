@@ -1,14 +1,19 @@
 import 'package:flip_coin/components/primaryButton.component.dart';
+import 'package:flip_coin/modules/wallet/controller/wallet.controller.dart';
 import 'package:flip_coin/utils/assets.util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_scroll_shadow/flutter_scroll_shadow.dart';
 import 'package:get/get.dart';
 
 class WalletView extends StatelessWidget {
-  const WalletView({super.key});
+  WalletView({super.key});
+
+  final WalletController walletController = WalletController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.theme.colorScheme.surfaceBright,
       body: Center(
         child: Container(
           width: double.infinity,
@@ -24,7 +29,7 @@ class WalletView extends StatelessWidget {
               ],
             ),
           ),
-          child: ListView(
+          child: Column(
             children: [
               const SizedBox(height: 10),
               Row(
@@ -57,7 +62,7 @@ class WalletView extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
               Container(
                 width: double.infinity,
                 height: 80,
@@ -69,9 +74,8 @@ class WalletView extends StatelessWidget {
                 child: Row(
                   children: [
                     Image.asset(
-                      AssetsUtil.getTail(),
-                      height: 60,
-                      width: 60,
+                      AssetsUtil.getWalletAnimation(),
+                      width: 35,
                     ),
                     const SizedBox(width: 10),
                     Column(
@@ -98,7 +102,7 @@ class WalletView extends StatelessWidget {
                     ),
                     const Spacer(),
                     PrimaryButtonComponent(
-                      onClick: () {},
+                      onClick: () => walletController.onAddCoinClick(),
                       text: "ADD COIN",
                       fontSize: 13,
                       width: 80,
@@ -111,27 +115,28 @@ class WalletView extends StatelessWidget {
               const SizedBox(height: 10),
               Container(
                 width: double.infinity,
-                height: 75,
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                height: 60,
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                   color: context.theme.colorScheme.surfaceContainer,
                   border: Border.all(color: context.theme.colorScheme.primary),
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SizedBox(
-                      width: 150,
+                      width: 130,
                       child: Row(
                         children: [
                           Image.asset(
-                            AssetsUtil.getTail(),
+                            AssetsUtil.getGameCoinAnimation(),
                             height: 30,
                             width: 30,
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 5),
                           Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -143,9 +148,9 @@ class WalletView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "₹600",
+                                "₹8999999.00",
                                 style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   color: context.theme.colorScheme.onSurface,
                                 ),
@@ -156,21 +161,23 @@ class WalletView extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      width: 2,
+                      width: 1.5,
+                      height: 30,
                       color: context.theme.colorScheme.primary,
                     ),
                     SizedBox(
-                      width: 150,
+                      width: 130,
                       child: Row(
                         children: [
                           Image.asset(
-                            AssetsUtil.getTail(),
-                            height: 30,
+                            AssetsUtil.getWinCoinAnimation(),
+                            height: 40,
                             width: 30,
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 5),
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
                                 "Win Coin",
@@ -183,7 +190,7 @@ class WalletView extends StatelessWidget {
                               Text(
                                 "₹600",
                                 style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   color: context.theme.colorScheme.onSurface,
                                 ),
@@ -197,81 +204,155 @@ class WalletView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Text(
-                "Wallet History",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: context.theme.colorScheme.onSurface,
-                ),
-              ),
-              ListView.separated(
-                shrinkWrap: true,
-                primary: false,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 10,
-                separatorBuilder: (context, index) => Divider(
-                  height: 10,
-                  color: context.theme.colorScheme.primary,
-                ),
-                itemBuilder: (context, index) => Row(
-                  children: [
-                    Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(100)),
-                        color: context.theme.colorScheme.primaryFixed,
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Wallet History",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: context.theme.colorScheme.onSurface,
                     ),
-                    const SizedBox(width: 15),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Cash Withdrawn in UPI",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: context.theme.colorScheme.onSurface,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        RichText(
-                          text: TextSpan(
-                            text: "ORDER ID: ",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: context.theme.colorScheme.onSurface,
+                  ),
+                  MaterialButton(
+                    onPressed: () => walletController.onWalletHistoryFilterClick(),
+                    minWidth: 0,
+                    padding: EdgeInsets.zero,
+                    visualDensity: VisualDensity.compact,
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    child: Image.asset(
+                      AssetsUtil.getFilterIcon(),
+                      height: 24,
+                      width: 24,
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: ScrollShadow(
+                  child: RefreshIndicator(
+                    onRefresh: () async {},
+                    displacement: 20,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      itemCount: 100,
+                      separatorBuilder: (context, index) => Divider(
+                        height: 20,
+                        color: context.theme.colorScheme.primary,
+                      ),
+                      itemBuilder: (context, index) => Row(
+                        children: [
+                          Container(
+                            height: 35,
+                            width: 35,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(100)),
+                              color: context.theme.colorScheme.primary,
                             ),
+                            child: Image.asset(
+                              index % 2 == 0 ? AssetsUtil.getWithdrawIcon() : AssetsUtil.getDepositIcon(),
+                              height: 35,
+                              width: 35,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TextSpan(
-                                text: "TX-133211221",
+                              Text(
+                                "Cash ${index % 2 == 0 ? "Withdrawn" : "Deposit"} in UPI",
                                 style: TextStyle(
-                                  color: context.theme.colorScheme.scrim,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: context.theme.colorScheme.onSurface,
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              RichText(
+                                text: TextSpan(
+                                  text: "ORDER ID: ",
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                    color: context.theme.colorScheme.onSurface,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: "TX-133211221",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: context.theme.colorScheme.scrim,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                          const Spacer(),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(100)),
+                              gradient: LinearGradient(
+                                begin: AlignmentDirectional.topStart,
+                                end: AlignmentDirectional.bottomEnd,
+                                colors: index % 2 == 0
+                                    ? [
+                                        const Color(0xFFDC3545),
+                                        const Color(0xFFDC3545),
+                                      ]
+                                    : [
+                                        context.theme.colorScheme.scrim,
+                                        context.theme.colorScheme.surfaceTint,
+                                      ],
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  AssetsUtil.getCoin(),
+                                  height: 15,
+                                  width: 15,
+                                ),
+                                const SizedBox(width: 3),
+                                Text(
+                                  index % 2 == 0 ? "-1200" : "+120",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    color: context.theme.colorScheme.onSurface,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Spacer(),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(100)),
-                        color: context.theme.colorScheme.surfaceTint,
-                      ),
-                      child: Text(
-                        "+120",
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: context.theme.colorScheme.onSurface,
-                        ),
-                      ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    PrimaryButtonComponent(
+                      onClick: () => walletController.onWithdrawClick(),
+                      text: "Withdraw Coin",
+                      fontSize: 14,
+                      btnColor1: context.theme.colorScheme.tertiary,
+                      btnColor2: context.theme.colorScheme.tertiaryFixed,
+                    ),
+                    PrimaryButtonComponent(
+                      onClick: () => walletController.onAddCoinClick(),
+                      text: "Add Coin",
+                      fontSize: 14,
+                      btnColor1: context.theme.colorScheme.scrim,
+                      btnColor2: context.theme.colorScheme.surfaceTint,
                     ),
                   ],
                 ),
