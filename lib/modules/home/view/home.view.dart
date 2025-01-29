@@ -1,3 +1,4 @@
+import 'package:flip_coin/components/textField.component.dart';
 import 'package:flip_coin/modules/home/controller/home.controller.dart';
 import 'package:flip_coin/utils/assets.util.dart';
 import 'package:flutter/material.dart';
@@ -34,13 +35,35 @@ class HomeView extends StatelessWidget {
           child: ListView(
             children: [
               const SizedBox(height: 10),
-              Text(
-                "Coin Flip",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: context.theme.colorScheme.onSurface,
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  color: context.theme.colorScheme.primaryContainer.withOpacity(0.4),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Coin Flip",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: context.theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    Text(
+                      "₹ 103932.00",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: context.theme.colorScheme.onSurface,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 10),
@@ -131,16 +154,6 @@ class HomeView extends StatelessWidget {
                           );
                         }),
                   ),
-                  Obx(
-                    () => homeController.showConfetti.value
-                        ? LottieHelper.lottie(
-                            animationAsset: AssetsUtil.getConfettiLottie(),
-                            repeat: false,
-                            height: 200,
-                            width: 200,
-                          )
-                        : const SizedBox.shrink(),
-                  ),
                 ],
               ),
               Container(
@@ -180,85 +193,58 @@ class HomeView extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
-                        color: context.theme.colorScheme.surfaceContainer,
-                        border: Border.all(color: context.theme.colorScheme.primary),
-                      ),
-                      child: Row(
-                        children: [
-                          MaterialButton(
-                            onPressed: () => homeController.decreaseAmount(),
-                            minWidth: 30,
-                            height: 30,
-                            padding: EdgeInsets.zero,
-                            visualDensity: VisualDensity.compact,
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: const BorderRadius.all(Radius.circular(100)),
-                              side: BorderSide(color: context.theme.colorScheme.outline),
-                            ),
-                            child: Icon(
-                              Icons.remove,
-                              size: 18,
-                              color: context.theme.colorScheme.onSurface,
-                            ),
+                    Row(
+                      children: [
+                        MaterialButton(
+                          onPressed: () => homeController.decreaseAmount(),
+                          minWidth: 30,
+                          height: 30,
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: const BorderRadius.all(Radius.circular(100)),
+                            side: BorderSide(color: context.theme.colorScheme.outline),
                           ),
-                          const SizedBox(width: 10),
-                          Obx(
-                            () => Text(
-                              "₹${homeController.selectedAmount.value}",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: context.theme.colorScheme.onSurface,
-                              ),
-                            ),
+                          child: Icon(
+                            Icons.remove,
+                            size: 18,
+                            color: context.theme.colorScheme.onSurface,
                           ),
-                          const SizedBox(width: 10),
-                          MaterialButton(
-                            onPressed: () => homeController.increaseAmount(),
-                            minWidth: 30,
-                            height: 30,
-                            padding: EdgeInsets.zero,
-                            visualDensity: VisualDensity.compact,
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: const BorderRadius.all(Radius.circular(100)),
-                              side: BorderSide(color: context.theme.colorScheme.outline),
-                            ),
-                            child: Icon(
-                              Icons.add,
-                              size: 18,
-                              color: context.theme.colorScheme.onSurface,
-                            ),
+                        ),
+                        const SizedBox(width: 10),
+                        Flexible(
+                          child: TextFieldComponent(
+                            textEditingController: homeController.amountController,
+                            hintText: "Enter Amount",
+                            textInputType: TextInputType.number,
+                            maxLength: 4,
+                            height: 45,
                           ),
-                          const Spacer(),
-                          MaterialButton(
-                            onPressed: () {},
-                            minWidth: 30,
-                            height: 30,
-                            padding: EdgeInsets.zero,
-                            visualDensity: VisualDensity.compact,
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: const BorderRadius.all(Radius.circular(100)),
-                              side: BorderSide(color: context.theme.colorScheme.outline),
-                            ),
-                            child: Image.asset(
-                              AssetsUtil.getBetCoinIcon(),
-                              height: 12,
-                              width: 12,
-                            ),
+                        ),
+                        const SizedBox(width: 10),
+                        MaterialButton(
+                          onPressed: () => homeController.increaseAmount(),
+                          minWidth: 30,
+                          height: 30,
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: const BorderRadius.all(Radius.circular(100)),
+                            side: BorderSide(color: context.theme.colorScheme.outline),
                           ),
-                        ],
-                      ),
+                          child: Icon(
+                            Icons.add,
+                            size: 18,
+                            color: context.theme.colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 5),
                     Text(
@@ -270,21 +256,22 @@ class HomeView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    Wrap(
-                      spacing: 10,
-                      children: homeController.amountList
-                          .map(
-                            (amount) => PrimaryButtonComponent(
-                              onClick: () => homeController.onAmountSelect(amount),
-                              width: 56,
-                              height: 30,
-                              text: "₹$amount",
-                              fontSize: 14,
-                              btnColor1: context.theme.colorScheme.secondaryContainer,
-                              btnColor2: context.theme.colorScheme.secondaryContainer,
-                            ),
-                          )
-                          .toList(),
+                    SizedBox(
+                      height: 30,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: homeController.amountList.length,
+                        separatorBuilder: (context, index) => const SizedBox(width: 10),
+                        itemBuilder: (context, index) => PrimaryButtonComponent(
+                          onClick: () => homeController.onAmountSelect(homeController.amountList[index]),
+                          width: 56,
+                          height: 30,
+                          text: "₹${homeController.amountList[index]}",
+                          fontSize: 14,
+                          btnColor1: context.theme.colorScheme.secondaryContainer,
+                          btnColor2: context.theme.colorScheme.secondaryContainer,
+                        ),
+                      ),
                     ),
                   ],
                 ),

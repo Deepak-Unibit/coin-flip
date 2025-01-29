@@ -1,4 +1,5 @@
 import 'package:flip_coin/modules/home/components/autoPlayDialog.component.dart';
+import 'package:flip_coin/modules/home/components/resultDialog.component.dart';
 import 'package:flip_coin/modules/wallet/view/wallet.view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,13 +12,18 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   AnimationStatus status = AnimationStatus.dismissed;
   RxInt resultCoin = 0.obs;
   RxBool showConfetti = false.obs;
-  int totalAmount = 0;
 
   // Others
   TextEditingController amountController = TextEditingController(text: "10");
   RxInt selectedType = 0.obs;
   List<int> amountList = [50, 100, 200, 500, 1000];
   RxInt selectedAmount = 50.obs;
+  List<int> roundList = [10, 100, 500, 1000, 5000, 10000];
+  RxInt selectedRound = 10.obs;
+  RxBool cashDecreaseSwitch = false.obs;
+  RxBool singleWinSwitch = false.obs;
+  RxInt cashDecreaseAmount = 0.obs;
+  RxInt singleWinAmount = 0.obs;
 
   @override
   void onInit() {
@@ -29,14 +35,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       ..addStatusListener(
         (status) {
           this.status = status;
-          if (status == AnimationStatus.completed) {
-            _controller.value?.stop(); // Stop after completing 5 rotations
-            showConfetti.value = true;
-            Future.delayed(
-              4.seconds,
-              () => showConfetti.value = false,
-            );
-          }
         },
       );
 
@@ -44,25 +42,28 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void onWalletClick() {
-    Get.to(()=>WalletView());
+    Get.to(() => WalletView());
   }
 
   void decreaseAmount() {
-    if(selectedAmount.value <= 10) {
+    if (selectedAmount.value <= 10) {
       return;
     }
     selectedAmount.value = selectedAmount.value - 10;
+    amountController.text = "${selectedAmount.value}";
   }
 
   void increaseAmount() {
-    if(selectedAmount.value >= 1000) {
+    if (selectedAmount.value >= 1000) {
       return;
     }
     selectedAmount.value = selectedAmount.value + 10;
+    amountController.text = "${selectedAmount.value}";
   }
 
   void onAmountSelect(int amount) {
     selectedAmount.value = amount;
+    amountController.text = "${selectedAmount.value}";
   }
 
   void onSelectCoinType(int value) {
@@ -70,10 +71,69 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void onAutoPlayClick() {
+    selectedRound.value = 10;
+    cashDecreaseSwitch.value = false;
+    singleWinSwitch.value = false;
+    cashDecreaseAmount.value = 0;
+    singleWinAmount.value = 0;
+
     AutoPlayDialogComponent.show(
-      onSelectCoinType: onSelectCoinType,
+      roundList: roundList,
       selectedType: selectedType,
+      selectedRound: selectedRound,
+      cashDecreaseAmount: cashDecreaseAmount,
+      singleWinAmount: singleWinAmount,
+      cashDecreaseSwitch: cashDecreaseSwitch,
+      singleWinSwitch: singleWinSwitch,
+      onSelectCoinType: onSelectCoinType,
+      onSelectRound: onAutoPlayRoundClick,
+      onCashDecreaseSwitchClick: onCashDecreaseSwitchClick,
+      onSingleWinSwitchClick: onSingleWinSwitchClick,
+      onDecreaseCashDecrease: decreaseCashDecreaseAmount,
+      onIncreaseCashDecrease: increaseCashDecreaseAmount,
+      onDecreaseSingleWin: decreaseSingleWinAmount,
+      onIncreaseSingleWin: increaseSingleWinAmount,
     );
+  }
+
+  void onAutoPlayRoundClick(int round) {
+    selectedRound.value = round;
+  }
+
+  void onCashDecreaseSwitchClick() {
+    cashDecreaseSwitch.value = !cashDecreaseSwitch.value;
+  }
+
+  void onSingleWinSwitchClick() {
+    singleWinSwitch.value = !singleWinSwitch.value;
+  }
+
+  void decreaseCashDecreaseAmount() {
+    if (cashDecreaseAmount.value <= 0) {
+      return;
+    }
+    cashDecreaseAmount.value = cashDecreaseAmount.value - 10;
+  }
+
+  void increaseCashDecreaseAmount() {
+    // if (cashDecreaseAmount.value >= 1000) {
+    //   return;
+    // }
+    cashDecreaseAmount.value = cashDecreaseAmount.value + 10;
+  }
+
+  void decreaseSingleWinAmount() {
+    if (singleWinAmount.value <= 0) {
+      return;
+    }
+    singleWinAmount.value = singleWinAmount.value - 10;
+  }
+
+  void increaseSingleWinAmount() {
+    // if (cashDecreaseAmount.value >= 1000) {
+    //   return;
+    // }
+    singleWinAmount.value = singleWinAmount.value + 10;
   }
 
   RxBool isFlipping = false.obs;
@@ -94,10 +154,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           this.status = status;
           if (status == AnimationStatus.completed) {
             _controller.value?.stop();
-            showConfetti.value = true;
-            showLottie.value = true;
-            Future.delayed(3.5.seconds, () {
-              showConfetti.value = false;
+            ResultDialogComponent.show(
+              amount: 10,
+              coinType: selectedType.value,
+              isWin: selectedType.value == 0,
+            );
+            Future.delayed(500.milliseconds, () {
+              showLottie.value = true;
               isFlipping.value = false;
             });
           }
@@ -110,7 +173,5 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     showLottie.value = false;
 
     resultCoin.value = selectedType.value;
-
   }
-
 }

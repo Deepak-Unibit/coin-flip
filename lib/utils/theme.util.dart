@@ -41,6 +41,7 @@ class ThemesUtil {
       surfaceTint: Color(0xFF007508),
       tertiary: Color(0xFFFFE100),
       tertiaryFixed: Color(0xFFFD731A),
+      error: Color(0xFFC62300),
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: Color(0xFFFFFFFF),

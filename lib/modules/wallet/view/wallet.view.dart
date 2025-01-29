@@ -237,7 +237,7 @@ class WalletView extends StatelessWidget {
                     displacement: 20,
                     child: ListView.separated(
                       padding: const EdgeInsets.symmetric(vertical: 5),
-                      itemCount: 100,
+                      itemCount: 3,
                       separatorBuilder: (context, index) => Divider(
                         height: 20,
                         color: context.theme.colorScheme.primary,

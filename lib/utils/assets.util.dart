@@ -20,9 +20,10 @@ class AssetsUtil {
   static getUPI() => 'assets/images/upi.png';
   static getFilterIcon() => 'assets/images/filter.png';
 
-  static getConfettiLottie() => 'assets/lotties/confetti-animation.json';
+  static getConfettiLottie() => 'assets/lotties/confettiAnimation.json';
   static getGlowingLottie() => 'assets/lotties/glowingAnimation.json';
   static getWalletAnimation() => 'assets/lotties/rupeeWalletAnimation.gif';
   static getGameCoinAnimation() => 'assets/lotties/gameCoinAnimation.gif';
   static getWinCoinAnimation() => 'assets/lotties/winCoinAnimation.gif';
+  static getLostAnimation() => 'assets/lotties/lostAnimation.json';
 }

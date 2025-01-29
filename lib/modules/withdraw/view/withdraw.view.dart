@@ -352,7 +352,7 @@ class WithdrawView extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                          const SizedBox(height: 15),
+                          const SizedBox(height: 30),
                           PrimaryButtonComponent(
                             onClick: () {},
                             text: "Withdraw Now",
