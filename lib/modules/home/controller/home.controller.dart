@@ -57,7 +57,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       // }
 
       // Development
-      Future.delayed(200.milliseconds, () => login(123));
+      Future.delayed(200.milliseconds, () => login(12));
     } catch (e) {
       print(e);
     }

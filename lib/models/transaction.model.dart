@@ -47,7 +47,8 @@ class TransactionModel {
 class TransactionData {
   TransactionData({
     String? id,
-    String? tid,
+    String? userId,
+    String? gameId,
     num? amount,
     String? mode,
     num? coinType,
@@ -57,9 +58,11 @@ class TransactionData {
     String? details,
     String? createdAt,
     String? updatedAt,
+    num? currentBalance,
   }) {
     _id = id;
-    _tid = tid;
+    _userId = userId;
+    _gameId = gameId;
     _amount = amount;
     _mode = mode;
     _coinType = coinType;
@@ -69,11 +72,13 @@ class TransactionData {
     _details = details;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
+    _currentBalance = currentBalance;
   }
 
   TransactionData.fromJson(dynamic json) {
     _id = json['_id'];
-    _tid = json['tid'];
+    _userId = json['userId'];
+    _gameId = json['gameId'];
     _amount = json['amount'];
     _mode = json['mode'];
     _coinType = json['coinType'];
@@ -83,9 +88,11 @@ class TransactionData {
     _details = json['details'];
     _createdAt = json['createdAt'];
     _updatedAt = json['updatedAt'];
+    _currentBalance = json['currentBalance'];
   }
   String? _id;
-  String? _tid;
+  String? _userId;
+  String? _gameId;
   num? _amount;
   String? _mode;
   num? _coinType;
@@ -95,9 +102,11 @@ class TransactionData {
   String? _details;
   String? _createdAt;
   String? _updatedAt;
+  num? _currentBalance;
 
   String? get id => _id;
-  String? get tid => _tid;
+  String? get userId => _userId;
+  String? get gameId => _gameId;
   num? get amount => _amount;
   String? get mode => _mode;
   num? get coinType => _coinType;
@@ -107,11 +116,15 @@ class TransactionData {
   String? get details => _details;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
+  num? get currentBalance => _currentBalance;
+
+  set setCurrentBalance(num value) => _currentBalance = value;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = _id;
-    map['tid'] = _tid;
+    map['userId'] = _userId;
+    map['gameId'] = _gameId;
     map['amount'] = _amount;
     map['mode'] = _mode;
     map['coinType'] = _coinType;
@@ -121,6 +134,7 @@ class TransactionData {
     map['details'] = _details;
     map['createdAt'] = _createdAt;
     map['updatedAt'] = _updatedAt;
+    map['currentBalance'] = _currentBalance;
     return map;
   }
 }

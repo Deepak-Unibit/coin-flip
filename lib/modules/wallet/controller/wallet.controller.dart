@@ -7,7 +7,6 @@ import 'package:flip_coin/modules/withdraw/view/withdraw.view.dart';
 import 'package:flip_coin/services/data.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-
 import '../../../utils/routes.util.dart';
 
 class WalletController extends GetxController {
@@ -20,9 +19,13 @@ class WalletController extends GetxController {
   RxBool isLoading = false.obs;
   int currentPage = 1;
   int futurePage = 1;
+  double gameCoinTemp = 0;
+  double winCoinTemp = 0;
 
   WalletController() {
     getTransactions();
+    gameCoinTemp = (dataService.profileData.value.gameCoin ?? 0.0) as double;
+    winCoinTemp = (dataService.profileData.value.winCoin ?? 0.0) as double;
   }
 
   void onScrollEnd() {
@@ -40,10 +43,13 @@ class WalletController extends GetxController {
     getTransactions();
   }
 
+  bool isGameCoinDone = false;
+  bool isWinCoinDone = false;
   Future<void> getTransactions() async {
     isLoading.value = true;
     var resp = await ApiCall.get("${UrlApi.getTransaction}?page=$currentPage&limit=5");
     isLoading.value = false;
+    print(resp);
 
     TransactionModel transactionModel = TransactionModel.fromJson(resp);
 
@@ -51,7 +57,26 @@ class WalletController extends GetxController {
       transactionDataList.addAll(transactionModel.data ?? []);
       transactionDataList.refresh();
       futurePage++;
-      print(transactionModel.data?.length);
+      for(int i=0; i<transactionDataList.length; i++) {
+        if(transactionDataList[i].status != 1) {
+          transactionDataList[i].setCurrentBalance = gameCoinTemp;
+          continue;
+        }
+        if(i==0) {
+          transactionDataList[i].setCurrentBalance = gameCoinTemp;
+          continue;
+        }
+        else{
+          if(transactionDataList[i].txnType==1) {
+            gameCoinTemp += (transactionDataList[i].amount??0);
+            transactionDataList[i].setCurrentBalance = gameCoinTemp;
+          }
+          else {
+            gameCoinTemp -= (transactionDataList[i].amount??0);
+            transactionDataList[i].setCurrentBalance = gameCoinTemp;
+          }
+        }
+      }
     }
     return;
   }

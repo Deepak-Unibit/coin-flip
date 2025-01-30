@@ -383,18 +383,17 @@ class WalletView extends StatelessWidget {
                                                   RichText(
                                                     textAlign: TextAlign.center,
                                                     text: TextSpan(
-                                                      text: "ORDER ID: ",
+                                                      text: "${walletController.transactionDataList[index].coinType == 1 ? "Game Coin" : "Win Coin"}: ",
                                                       style: TextStyle(
                                                         fontSize: 10,
                                                         fontWeight: FontWeight.w500,
-                                                        color: context.theme.colorScheme.onSurface,
+                                                        color: context.theme.colorScheme.outline,
                                                       ),
                                                       children: [
                                                         TextSpan(
-                                                          text: "TX-${walletController.transactionDataList[index].id?.substring(walletController.transactionDataList[index].id!.length - 5) ?? "--"}",
+                                                          text: "${walletController.transactionDataList[index].currentBalance ?? 0}",
                                                           style: TextStyle(
-                                                            fontWeight: FontWeight.w600,
-                                                            color: context.theme.colorScheme.scrim,
+                                                            color: context.theme.colorScheme.onSurface,
                                                           ),
                                                         ),
                                                       ],
