@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flip_coin/services/data.service.dart';
 import 'package:flip_coin/utils/theme.util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
   ApiCall.configureDio();
+  Get.put(DataService());
   runApp(const MyApp());
 }
 

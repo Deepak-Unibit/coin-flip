@@ -15,7 +15,7 @@ class ApiCall {
   }
 
   static void updateToken(String token) {
-    dio.options.headers['x-access-token'] = token;
+    dio.options.headers['x-access-token'] = 'Bearer $token';
     AppConst.authToken = token;
   }
 
@@ -123,9 +123,9 @@ class ApiCall {
         forceLogout();
         return responseModel.toJson();
       }
-      // if (response.headers.value('Authorization') != null && response.headers.value('Authorization') != '') {
-      //   updateToken(response.headers.value('Authorization')!);
-      // }
+      if (response.headers.value('Authorization') != null && response.headers.value('Authorization') != '') {
+        updateToken(response.headers.value('Authorization')!);
+      }
       if (response.data["data"] == null) {
         return response.data;
       }
@@ -141,7 +141,7 @@ class ApiCall {
       logger.e(url);
       ResponseModel responseModel = ResponseModel.fromJson({
         "status": "error",
-        "message": "Something went wrong",
+        "message": "$e",
         "responseCode": 500,
         "data": null,
       });

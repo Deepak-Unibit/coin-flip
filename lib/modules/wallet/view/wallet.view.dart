@@ -1,9 +1,12 @@
+import 'package:flip_coin/components/loadingPage/loadingPage.component.dart';
 import 'package:flip_coin/components/primaryButton.component.dart';
+import 'package:flip_coin/helper/date.helper.dart';
 import 'package:flip_coin/modules/wallet/controller/wallet.controller.dart';
 import 'package:flip_coin/utils/assets.util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_scroll_shadow/flutter_scroll_shadow.dart';
 import 'package:get/get.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 class WalletView extends StatelessWidget {
   WalletView({super.key});
@@ -91,7 +94,7 @@ class WalletView extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "₹1200",
+                          "₹${(walletController.dataService.profileData.value.winCoin ?? 0) + (walletController.dataService.profileData.value.gameCoin ?? 0)}",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -148,7 +151,7 @@ class WalletView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "₹8999999.00",
+                                "₹${walletController.dataService.profileData.value.gameCoin ?? 0}",
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
@@ -177,7 +180,7 @@ class WalletView extends StatelessWidget {
                           const SizedBox(width: 5),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 "Win Coin",
@@ -188,7 +191,7 @@ class WalletView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "₹600",
+                                "₹${walletController.dataService.profileData.value.winCoin ?? 0}",
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
@@ -232,104 +235,187 @@ class WalletView extends StatelessWidget {
               ),
               Expanded(
                 child: ScrollShadow(
-                  child: RefreshIndicator(
-                    onRefresh: () async {},
-                    displacement: 20,
-                    child: ListView.separated(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      itemCount: 3,
-                      separatorBuilder: (context, index) => Divider(
-                        height: 20,
-                        color: context.theme.colorScheme.primary,
-                      ),
-                      itemBuilder: (context, index) => Row(
-                        children: [
-                          Container(
-                            height: 35,
-                            width: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(Radius.circular(100)),
-                              color: context.theme.colorScheme.primary,
-                            ),
-                            child: Image.asset(
-                              index % 2 == 0 ? AssetsUtil.getWithdrawIcon() : AssetsUtil.getDepositIcon(),
-                              height: 35,
-                              width: 35,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Cash ${index % 2 == 0 ? "Withdrawn" : "Deposit"} in UPI",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: context.theme.colorScheme.onSurface,
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              RichText(
-                                text: TextSpan(
-                                  text: "ORDER ID: ",
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w500,
-                                    color: context.theme.colorScheme.onSurface,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: "TX-133211221",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: context.theme.colorScheme.scrim,
-                                      ),
+                  child: Obx(
+                    () => LazyLoadScrollView(
+                      onEndOfPage: () => walletController.onScrollEnd(),
+                      child: RefreshIndicator(
+                        onRefresh: () => walletController.onRefresh(),
+                        displacement: 20,
+                        child: ListView(
+                          children: [
+                            walletController.transactionDataList.isEmpty && !walletController.isLoading.value
+                                ? Text(
+                                    "No Wallet Data",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: context.theme.colorScheme.outline,
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(Radius.circular(100)),
-                              gradient: LinearGradient(
-                                begin: AlignmentDirectional.topStart,
-                                end: AlignmentDirectional.bottomEnd,
-                                colors: index % 2 == 0
-                                    ? [
-                                        const Color(0xFFDC3545),
-                                        const Color(0xFFDC3545),
-                                      ]
-                                    : [
-                                        context.theme.colorScheme.scrim,
-                                        context.theme.colorScheme.surfaceTint,
+                                  )
+                                : ListView.separated(
+                                    padding: const EdgeInsets.symmetric(vertical: 5),
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    itemCount: walletController.transactionDataList.length,
+                                    separatorBuilder: (context, index) => Divider(
+                                      height: 20,
+                                      color: context.theme.colorScheme.primary,
+                                    ),
+                                    itemBuilder: (context, index) => Row(
+                                      children: [
+                                        Container(
+                                          height: 35,
+                                          width: 35,
+                                          decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                            color: context.theme.colorScheme.primary,
+                                          ),
+                                          child: Image.asset(
+                                            (walletController.transactionDataList[index].txnType ?? 0) == 2 ? AssetsUtil.getWithdrawIcon() : AssetsUtil.getDepositIcon(),
+                                            height: 35,
+                                            width: 35,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Flexible(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                walletController.transactionDataList[index].details ?? "",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: context.theme.colorScheme.onSurface,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      RichText(
+                                                        text: TextSpan(
+                                                          text: "ORDER ID: ",
+                                                          style: TextStyle(
+                                                            fontSize: 10,
+                                                            fontWeight: FontWeight.w500,
+                                                            color: context.theme.colorScheme.onSurface,
+                                                          ),
+                                                          children: [
+                                                            TextSpan(
+                                                              text:
+                                                                  "TX-${walletController.transactionDataList[index].id?.substring(walletController.transactionDataList[index].id!.length - 5) ?? "--"}",
+                                                              style: TextStyle(
+                                                                fontWeight: FontWeight.w600,
+                                                                color: context.theme.colorScheme.scrim,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        DateHelper().dateFormatNull(date: walletController.transactionDataList[index].createdAt ?? "", format: "dd MMM yyyy HH:mm a"),
+                                                        style: TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight: FontWeight.w500,
+                                                          color: context.theme.colorScheme.onSurface,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Container(
+                                                    padding: const EdgeInsets.only(top: 2, bottom: 2, left: 3, right: 5),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                                      gradient: LinearGradient(
+                                                        begin: AlignmentDirectional.topStart,
+                                                        end: AlignmentDirectional.bottomEnd,
+                                                        colors: (walletController.transactionDataList[index].txnType ?? 0) == 2
+                                                            ? [
+                                                                context.theme.colorScheme.error,
+                                                                context.theme.colorScheme.error,
+                                                              ]
+                                                            : [
+                                                                context.theme.colorScheme.scrim,
+                                                                context.theme.colorScheme.surfaceTint,
+                                                              ],
+                                                      ),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        Image.asset(
+                                                          AssetsUtil.getCoin(),
+                                                          height: 15,
+                                                          width: 15,
+                                                        ),
+                                                        const SizedBox(width: 2),
+                                                        Text(
+                                                          "${(walletController.transactionDataList[index].txnType ?? 0) == 2 ? "-" : "+"}${walletController.transactionDataList[index].amount ?? 0}",
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight: FontWeight.w500,
+                                                            color: context.theme.colorScheme.onSurface,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    (walletController.transactionDataList[index].status ?? 0) == 1 ? "(Success)" : "(Failed)",
+                                                    style: TextStyle(
+                                                      fontSize: 11,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: (walletController.transactionDataList[index].status ?? 0) == 1 ? context.theme.colorScheme.scrim : context.theme.colorScheme.error,
+                                                    ),
+                                                  ),
+                                                  RichText(
+                                                    textAlign: TextAlign.center,
+                                                    text: TextSpan(
+                                                      text: "ORDER ID: ",
+                                                      style: TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight: FontWeight.w500,
+                                                        color: context.theme.colorScheme.onSurface,
+                                                      ),
+                                                      children: [
+                                                        TextSpan(
+                                                          text: "TX-${walletController.transactionDataList[index].id?.substring(walletController.transactionDataList[index].id!.length - 5) ?? "--"}",
+                                                          style: TextStyle(
+                                                            fontWeight: FontWeight.w600,
+                                                            color: context.theme.colorScheme.scrim,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ],
+                                    ),
+                                  ),
+                            Obx(
+                              () => Visibility(
+                                visible: walletController.isLoading.value,
+                                child: LoadingPage.listLoading(),
                               ),
                             ),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  AssetsUtil.getCoin(),
-                                  height: 15,
-                                  width: 15,
-                                ),
-                                const SizedBox(width: 3),
-                                Text(
-                                  index % 2 == 0 ? "-1200" : "+120",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: context.theme.colorScheme.onSurface,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -1,12 +1,15 @@
 import 'package:flip_coin/components/primaryButton.component.dart';
 import 'package:flip_coin/components/textField.component.dart';
+import 'package:flip_coin/modules/withdraw/controller/withdraw.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/assets.util.dart';
 
 class WithdrawView extends StatelessWidget {
-  const WithdrawView({super.key});
+  WithdrawView({super.key});
+
+  final WithdrawController withdrawController = WithdrawController();
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +164,7 @@ class WithdrawView extends StatelessWidget {
                             runSpacing: 10,
                             children: [
                               MaterialButton(
-                                onPressed: () {},
+                                onPressed: () => withdrawController.onWithdrawOptionClick("Google Pay", AssetsUtil.getGPay()),
                                 minWidth: 0,
                                 padding: EdgeInsets.zero,
                                 visualDensity: VisualDensity.compact,
@@ -188,7 +191,7 @@ class WithdrawView extends StatelessWidget {
                                 ),
                               ),
                               MaterialButton(
-                                onPressed: () {},
+                                onPressed: () => withdrawController.onWithdrawOptionClick("PhonePe", AssetsUtil.getPhonePe()),
                                 minWidth: 0,
                                 padding: EdgeInsets.zero,
                                 visualDensity: VisualDensity.compact,
@@ -215,7 +218,7 @@ class WithdrawView extends StatelessWidget {
                                 ),
                               ),
                               MaterialButton(
-                                onPressed: () {},
+                                onPressed: () => withdrawController.onWithdrawOptionClick("Paytm", AssetsUtil.getPaytm()),
                                 minWidth: 0,
                                 padding: EdgeInsets.zero,
                                 visualDensity: VisualDensity.compact,
@@ -242,7 +245,7 @@ class WithdrawView extends StatelessWidget {
                                 ),
                               ),
                               MaterialButton(
-                                onPressed: () {},
+                                onPressed: () => withdrawController.onWithdrawOptionClick("UPI", AssetsUtil.getUPI()),
                                 minWidth: 0,
                                 padding: EdgeInsets.zero,
                                 visualDensity: VisualDensity.compact,

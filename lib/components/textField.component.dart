@@ -5,7 +5,7 @@ class TextFieldComponent extends StatelessWidget {
   const TextFieldComponent({
     super.key,
     required this.textEditingController,
-    required this.hintText,
+    this.hintText = "Enter Amount",
     this.isBorder = false,
     required this.textInputType,
     required this.maxLength,
@@ -43,7 +43,7 @@ class TextFieldComponent extends StatelessWidget {
             color: context.theme.colorScheme.onSurface.withOpacity(0.5),
           ),
           alignLabelWithHint: true,
-          labelText: "Enter Amount",
+          labelText: hintText,
           labelStyle: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w400,
@@ -65,14 +65,14 @@ class TextFieldComponent extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(
-              color: context.theme.colorScheme.outline,
+              color: context.theme.colorScheme.outline.withOpacity(0.5),
               width: 1,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(
-              color: context.theme.colorScheme.outline,
+              color: context.theme.colorScheme.outline.withOpacity(0.75),
               width: 2,
             ),
           ),

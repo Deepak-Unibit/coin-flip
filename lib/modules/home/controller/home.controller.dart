@@ -5,6 +5,8 @@ import 'package:flip_coin/models/profile.model.dart';
 import 'package:flip_coin/modules/home/components/autoPlayDialog.component.dart';
 import 'package:flip_coin/modules/home/components/resultDialog.component.dart';
 import 'package:flip_coin/modules/wallet/view/wallet.view.dart';
+import 'package:flip_coin/services/data.service.dart';
+import 'package:flip_coin/utils/routes.util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:js' as js;
@@ -15,6 +17,7 @@ import '../../../components/loadingPage/loadingPage.component.dart';
 import '../../../models/user.model.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
+  DataService dataService = Get.find<DataService>();
   Rx<ProfileData> profileData = ProfileData().obs;
 
   // Animation
@@ -40,27 +43,21 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   @override
   void onInit() {
     _controller.value = AnimationController(vsync: this, duration: const Duration(milliseconds: 0));
-    animation = Tween(end: 30.0, begin: 0.0).animate(_controller.value as Animation<double>)
-      ..addListener(
-        () {},
-      )
-      ..addStatusListener(
-        (status) {
-          this.status = status;
-        },
-      );
+    animation = Tween(end: 0.0, begin: 0.0).animate(_controller.value as Animation<double>);
 
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      UserModel userModel = UserModel.fromJson(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // UserModel userModel = UserModel.fromJson(userData);
+      //
+      // print(userData);
+      // if (userModel.id != null) {
+      //   Future.delayed(200.milliseconds, () => login(userModel.id ?? 0));
+      // }
 
-      print(userData);
-
-      if (userModel.id != null) {
-        Future.delayed(200.milliseconds, () => login(userModel.id ?? 0));
-      }
+      // Development
+      Future.delayed(200.milliseconds, () => login(123));
     } catch (e) {
       print(e);
     }
@@ -74,19 +71,21 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.get("${UrlApi.login}/$telegramId");
     LoadingPage.close();
 
+    print(resp);
+
     ProfileModel profileModel = ProfileModel.fromJson(resp);
 
-    if(profileModel.responseCode == 200) {
+    if (profileModel.responseCode == 200) {
       profileData.value = profileModel.data ?? ProfileData();
-    }
-    else {
+      dataService.profileData.value = profileModel.data ?? ProfileData();
+    } else {
       SnackBarHelper.show(profileModel.message);
     }
     return;
   }
 
   void onWalletClick() {
-    Get.to(() => WalletView());
+    RoutesUtil.to(() => WalletView());
   }
 
   void decreaseAmount() {
@@ -114,6 +113,46 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     selectedType.value = value;
   }
 
+  RxBool isFlipping = false.obs;
+  RxBool showLottie = true.obs;
+  void onFlipCoin() {
+    if (isFlipping.value) {
+      return;
+    }
+    _controller.value = AnimationController(vsync: this, duration: const Duration(seconds: 5));
+    animation = Tween(end: selectedType.value == 0 ? 18.0 : 19.0, begin: 0.0).animate(
+      CurvedAnimation(parent: _controller.value!, curve: Curves.easeInOut),
+    )
+      ..addListener(
+        () {},
+      )
+      ..addStatusListener(
+        (status) {
+          this.status = status;
+          if (status == AnimationStatus.completed) {
+            _controller.value?.stop();
+            ResultDialogComponent.show(
+              amount: 10,
+              coinType: selectedType.value,
+              isWin: selectedType.value == 0,
+            );
+            Future.delayed(500.milliseconds, () {
+              showLottie.value = true;
+              isFlipping.value = false;
+            });
+          }
+        },
+      );
+    _controller.value?.reset();
+    _controller.value?.forward();
+
+    isFlipping.value = true;
+    showLottie.value = false;
+
+    resultCoin.value = selectedType.value;
+  }
+
+  // Autoplay
   void onAutoPlayClick() {
     selectedRound.value = 10;
     cashDecreaseSwitch.value = false;
@@ -178,44 +217,5 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     //   return;
     // }
     singleWinAmount.value = singleWinAmount.value + 10;
-  }
-
-  RxBool isFlipping = false.obs;
-  RxBool showLottie = true.obs;
-  void onFlipCoin() {
-    if (isFlipping.value) {
-      return;
-    }
-    _controller.value = AnimationController(vsync: this, duration: const Duration(seconds: 5));
-    animation = Tween(end: selectedType.value == 0 ? 18.0 : 19.0, begin: 0.0).animate(
-      CurvedAnimation(parent: _controller.value!, curve: Curves.easeInOut),
-    )
-      ..addListener(
-        () {},
-      )
-      ..addStatusListener(
-        (status) {
-          this.status = status;
-          if (status == AnimationStatus.completed) {
-            _controller.value?.stop();
-            ResultDialogComponent.show(
-              amount: 10,
-              coinType: selectedType.value,
-              isWin: selectedType.value == 0,
-            );
-            Future.delayed(500.milliseconds, () {
-              showLottie.value = true;
-              isFlipping.value = false;
-            });
-          }
-        },
-      );
-    _controller.value?.reset();
-    _controller.value?.forward();
-
-    isFlipping.value = true;
-    showLottie.value = false;
-
-    resultCoin.value = selectedType.value;
   }
 }

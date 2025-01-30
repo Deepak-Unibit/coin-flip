@@ -3,7 +3,7 @@ class AppConst {
 
   // Development
   static const String appId = "ewrewrewrewrew_dev";
-  static const String baseUrl = "http://dev.fun11.in:7171";
+  static const String baseUrl = "https://dev.fun11.in:7171";
   static const String encryptionKey = "asdasdasdasasd_dev";
 
   // Production

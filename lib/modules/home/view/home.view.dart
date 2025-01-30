@@ -2,6 +2,7 @@ import 'package:flip_coin/components/textField.component.dart';
 import 'package:flip_coin/modules/home/controller/home.controller.dart';
 import 'package:flip_coin/utils/assets.util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_scroll_shadow/flutter_scroll_shadow.dart';
 import 'package:get/get.dart';
 import 'dart:math' as math;
 
@@ -160,7 +161,7 @@ class HomeView extends StatelessWidget {
               ),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                padding: const EdgeInsets.symmetric(vertical: 15),
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(18)),
                   color: context.theme.colorScheme.primaryContainer.withOpacity(0.4),
@@ -168,110 +169,122 @@ class HomeView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Your Bet",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: context.theme.colorScheme.onSurface,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Your Bet",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: context.theme.colorScheme.onSurface,
+                            ),
                           ),
-                        ),
-                        MaterialButton(
-                          onPressed: () {},
-                          minWidth: 0,
-                          padding: EdgeInsets.zero,
-                          visualDensity: VisualDensity.compact,
-                          highlightColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          child: Icon(
-                            Icons.info,
-                            size: 15,
-                            color: context.theme.colorScheme.onSurface,
+                          MaterialButton(
+                            onPressed: () {},
+                            minWidth: 0,
+                            padding: EdgeInsets.zero,
+                            visualDensity: VisualDensity.compact,
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            child: Icon(
+                              Icons.info,
+                              size: 15,
+                              color: context.theme.colorScheme.onSurface,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        MaterialButton(
-                          onPressed: () => homeController.decreaseAmount(),
-                          minWidth: 30,
-                          height: 30,
-                          padding: EdgeInsets.zero,
-                          visualDensity: VisualDensity.compact,
-                          highlightColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: const BorderRadius.all(Radius.circular(100)),
-                            side: BorderSide(color: context.theme.colorScheme.outline),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          MaterialButton(
+                            onPressed: () => homeController.decreaseAmount(),
+                            minWidth: 30,
+                            height: 30,
+                            padding: EdgeInsets.zero,
+                            visualDensity: VisualDensity.compact,
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: const BorderRadius.all(Radius.circular(100)),
+                              side: BorderSide(color: context.theme.colorScheme.outline),
+                            ),
+                            child: Icon(
+                              Icons.remove,
+                              size: 18,
+                              color: context.theme.colorScheme.onSurface,
+                            ),
                           ),
-                          child: Icon(
-                            Icons.remove,
-                            size: 18,
-                            color: context.theme.colorScheme.onSurface,
+                          const SizedBox(width: 10),
+                          Flexible(
+                            child: TextFieldComponent(
+                              textEditingController: homeController.amountController,
+                              hintText: "Enter Amount",
+                              textInputType: TextInputType.number,
+                              maxLength: 4,
+                              height: 45,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Flexible(
-                          child: TextFieldComponent(
-                            textEditingController: homeController.amountController,
-                            hintText: "Enter Amount",
-                            textInputType: TextInputType.number,
-                            maxLength: 4,
-                            height: 45,
+                          const SizedBox(width: 10),
+                          MaterialButton(
+                            onPressed: () => homeController.increaseAmount(),
+                            minWidth: 30,
+                            height: 30,
+                            padding: EdgeInsets.zero,
+                            visualDensity: VisualDensity.compact,
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: const BorderRadius.all(Radius.circular(100)),
+                              side: BorderSide(color: context.theme.colorScheme.outline),
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              size: 18,
+                              color: context.theme.colorScheme.onSurface,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        MaterialButton(
-                          onPressed: () => homeController.increaseAmount(),
-                          minWidth: 30,
-                          height: 30,
-                          padding: EdgeInsets.zero,
-                          visualDensity: VisualDensity.compact,
-                          highlightColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: const BorderRadius.all(Radius.circular(100)),
-                            side: BorderSide(color: context.theme.colorScheme.outline),
-                          ),
-                          child: Icon(
-                            Icons.add,
-                            size: 18,
-                            color: context.theme.colorScheme.onSurface,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 5),
-                    Text(
-                      "*Select the amount",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: context.theme.colorScheme.outline.withOpacity(0.55),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        "*Select the amount",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: context.theme.colorScheme.outline.withOpacity(0.55),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 5),
                     SizedBox(
                       height: 30,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: homeController.amountList.length,
-                        separatorBuilder: (context, index) => const SizedBox(width: 10),
-                        itemBuilder: (context, index) => PrimaryButtonComponent(
-                          onClick: () => homeController.onAmountSelect(homeController.amountList[index]),
-                          width: 56,
-                          height: 30,
-                          text: "₹${homeController.amountList[index]}",
-                          fontSize: 14,
-                          btnColor1: context.theme.colorScheme.secondaryContainer,
-                          btnColor2: context.theme.colorScheme.secondaryContainer,
+                      child: ScrollShadow(
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          itemCount: homeController.amountList.length,
+                          separatorBuilder: (context, index) => const SizedBox(width: 10),
+                          itemBuilder: (context, index) => PrimaryButtonComponent(
+                            onClick: () => homeController.onAmountSelect(homeController.amountList[index]),
+                            width: 56,
+                            height: 30,
+                            text: "₹${homeController.amountList[index]}",
+                            fontSize: 14,
+                            btnColor1: context.theme.colorScheme.secondaryContainer,
+                            btnColor2: context.theme.colorScheme.secondaryContainer,
+                          ),
                         ),
                       ),
                     ),
