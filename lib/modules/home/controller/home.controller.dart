@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:flip_coin/modules/home/components/autoPlayDialog.component.dart';
 import 'package:flip_coin/modules/home/components/resultDialog.component.dart';
 import 'package:flip_coin/modules/wallet/view/wallet.view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:js' as js;
+
+import '../../../models/user.model.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
+  UserModel userModel = UserModel();
+
   // Animation
   final Rxn<AnimationController> _controller = Rxn<AnimationController>();
   AnimationController? get controller => _controller.value;
@@ -37,6 +44,29 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           this.status = status;
         },
       );
+
+    try {
+      // Production
+      var state = js.JsObject.fromBrowserObject(js.context['state']);
+      Map<String, dynamic> userData = jsonDecode(state['userData']);
+      userModel = UserModel.fromJson(userData);
+
+      print(userData);
+
+      // Development
+      // userModel = UserModel(
+      //   id: 1146609300,
+      //   firstName: "New3 Kumar",
+      //   lastName: "Behera",
+      //   allowsWriteToPm: true,s
+      // );
+
+      // if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
+      //   Future.delayed(200.milliseconds, () => verifySubscription(userModel.id ?? 0));
+      // }
+    } catch (e) {
+      print(e);
+    }
 
     super.onInit();
   }
