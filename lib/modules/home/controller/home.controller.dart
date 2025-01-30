@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flip_coin/helper/snackBar.helper.dart';
+import 'package:flip_coin/models/profile.model.dart';
 import 'package:flip_coin/modules/home/components/autoPlayDialog.component.dart';
 import 'package:flip_coin/modules/home/components/resultDialog.component.dart';
 import 'package:flip_coin/modules/wallet/view/wallet.view.dart';
@@ -7,10 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:js' as js;
 
+import '../../../api/call.api.dart';
+import '../../../api/url.api.dart';
+import '../../../components/loadingPage/loadingPage.component.dart';
 import '../../../models/user.model.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
-  UserModel userModel = UserModel();
+  Rx<ProfileData> profileData = ProfileData().obs;
 
   // Animation
   final Rxn<AnimationController> _controller = Rxn<AnimationController>();
@@ -49,26 +54,35 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       // Production
       var state = js.JsObject.fromBrowserObject(js.context['state']);
       Map<String, dynamic> userData = jsonDecode(state['userData']);
-      userModel = UserModel.fromJson(userData);
+      UserModel userModel = UserModel.fromJson(userData);
 
       print(userData);
 
-      // Development
-      // userModel = UserModel(
-      //   id: 1146609300,
-      //   firstName: "New3 Kumar",
-      //   lastName: "Behera",
-      //   allowsWriteToPm: true,s
-      // );
-
-      // if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
-      //   Future.delayed(200.milliseconds, () => verifySubscription(userModel.id ?? 0));
-      // }
+      if (userModel.id != null) {
+        Future.delayed(200.milliseconds, () => login(userModel.id ?? 0));
+      }
     } catch (e) {
       print(e);
     }
 
     super.onInit();
+  }
+
+  Future<void> login(num telegramId) async {
+    // Production
+    LoadingPage.show();
+    var resp = await ApiCall.get("${UrlApi.login}/$telegramId");
+    LoadingPage.close();
+
+    ProfileModel profileModel = ProfileModel.fromJson(resp);
+
+    if(profileModel.responseCode == 200) {
+      profileData.value = profileModel.data ?? ProfileData();
+    }
+    else {
+      SnackBarHelper.show(profileModel.message);
+    }
+    return;
   }
 
   void onWalletClick() {

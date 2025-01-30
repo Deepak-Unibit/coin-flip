@@ -54,13 +54,15 @@ class HomeView extends StatelessWidget {
                         color: context.theme.colorScheme.onSurface,
                       ),
                     ),
-                    Text(
-                      "₹ 103932.00",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: context.theme.colorScheme.onSurface,
+                    Obx(
+                      () => Text(
+                        "₹ ${(homeController.profileData.value.winCoin ?? 0) + (homeController.profileData.value.gameCoin ?? 0)}",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: context.theme.colorScheme.onSurface,
+                        ),
                       ),
                     ),
                   ],
