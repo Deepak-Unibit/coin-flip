@@ -15,8 +15,8 @@ class WalletController extends GetxController {
   RxList<TransactionData> transactionDataList = <TransactionData>[].obs;
   List<int> amountList = [100, 500, 1000];
   List<String> filterList = ["All", "Deposit", "Withdrawal", "Deposit and Withdrawal", "Game", "Admin", "Refer"];
-  RxString selectedFilter = "All".obs;
-  RxBool isLoading = false.obs;
+  RxInt selectedFilter = 100.obs;
+  RxBool isListLoading = false.obs;
   int currentPage = 1;
   int futurePage = 1;
   double gameCoinTemp = 0;
@@ -24,8 +24,8 @@ class WalletController extends GetxController {
 
   WalletController() {
     getTransactions();
-    gameCoinTemp = (dataService.profileData.value.gameCoin ?? 0.0) as double;
-    winCoinTemp = (dataService.profileData.value.winCoin ?? 0.0) as double;
+    gameCoinTemp = (dataService.coinData.value.gameCoin ?? 0.0) as double;
+    winCoinTemp = (dataService.coinData.value.winCoin ?? 0.0) as double;
   }
 
   void onScrollEnd() {
@@ -40,45 +40,68 @@ class WalletController extends GetxController {
     currentPage = 1;
     futurePage = 1;
     transactionDataList.clear();
+    isFirstGameCoinDone = false;
+    isFirstWinCoinDone = false;
+    gameCoinTemp = (dataService.coinData.value.gameCoin ?? 0.0) as double;
+    winCoinTemp = (dataService.coinData.value.winCoin ?? 0.0) as double;
     getTransactions();
   }
 
-  bool isGameCoinDone = false;
-  bool isWinCoinDone = false;
   Future<void> getTransactions() async {
-    isLoading.value = true;
-    var resp = await ApiCall.get("${UrlApi.getTransaction}?page=$currentPage&limit=5");
-    isLoading.value = false;
-    print(resp);
+    isListLoading.value = true;
+    var resp = await ApiCall.get("${UrlApi.getTransaction}?page=$currentPage&limit=10");
+    isListLoading.value = false;
 
     TransactionModel transactionModel = TransactionModel.fromJson(resp);
 
     if (transactionModel.responseCode == 200) {
-      transactionDataList.addAll(transactionModel.data ?? []);
+      transactionDataList.addAll(calculateCoinBalance(transactionModel.data ?? []));
       transactionDataList.refresh();
       futurePage++;
-      for(int i=0; i<transactionDataList.length; i++) {
-        if(transactionDataList[i].status != 1) {
+    }
+    return;
+  }
+
+  bool isFirstGameCoinDone = false;
+  bool isFirstWinCoinDone = false;
+  List<TransactionData> calculateCoinBalance(List<TransactionData> dataList) {
+    List<TransactionData> transactionDataList = dataList;
+    for (int i = 0; i < transactionDataList.length; i++) {
+      // Failed Transaction
+      if (transactionDataList[i].status != 1) {
+        transactionDataList[i].setCurrentBalance = gameCoinTemp;
+        continue;
+      }
+
+      if (transactionDataList[i].coinType == 1) {
+        if (!isFirstGameCoinDone) {
           transactionDataList[i].setCurrentBalance = gameCoinTemp;
-          continue;
-        }
-        if(i==0) {
-          transactionDataList[i].setCurrentBalance = gameCoinTemp;
-          continue;
-        }
-        else{
-          if(transactionDataList[i].txnType==1) {
-            gameCoinTemp += (transactionDataList[i].amount??0);
+          isFirstGameCoinDone = true;
+        } else {
+          if (transactionDataList[i].txnType == 1) {
+            gameCoinTemp += (transactionDataList[i].amount ?? 0);
+            transactionDataList[i].setCurrentBalance = gameCoinTemp;
+          } else {
+            gameCoinTemp -= (transactionDataList[i].amount ?? 0);
             transactionDataList[i].setCurrentBalance = gameCoinTemp;
           }
-          else {
-            gameCoinTemp -= (transactionDataList[i].amount??0);
-            transactionDataList[i].setCurrentBalance = gameCoinTemp;
+        }
+      } else if (transactionDataList[i].coinType == 2) {
+        if (!isFirstWinCoinDone) {
+          transactionDataList[i].setCurrentBalance = winCoinTemp;
+          isFirstWinCoinDone = true;
+        } else {
+          if (transactionDataList[i].txnType == 1) {
+            winCoinTemp += (transactionDataList[i].amount ?? 0);
+            transactionDataList[i].setCurrentBalance = winCoinTemp;
+          } else {
+            winCoinTemp -= (transactionDataList[i].amount ?? 0);
+            transactionDataList[i].setCurrentBalance = winCoinTemp;
           }
         }
       }
     }
-    return;
+    return transactionDataList;
   }
 
   void onAddCoinClick() {
@@ -95,19 +118,18 @@ class WalletController extends GetxController {
   }
 
   void onWalletHistoryFilterClick() {
-    selectedFilter.value = "All";
 
     FilterBottomModalSheetComponent.show(
       filterList: filterList,
       selectedFilter: selectedFilter,
       onItemClick: onFilterItemClick,
       onApplyClick: onFilterApplyClick,
-      onCancelClick: onFilterCancelClick,
+      onClearClick: onFilterCancelClick,
     );
   }
 
-  void onFilterItemClick(String item) {
-    selectedFilter.value = item;
+  void onFilterItemClick(int val) {
+    selectedFilter.value = val;
   }
 
   void onFilterApplyClick() {
@@ -120,5 +142,9 @@ class WalletController extends GetxController {
 
   void onWithdrawClick() {
     RoutesUtil.to(() => WithdrawView());
+  }
+
+  double truncateToDecimalPlaces(num value) {
+    return (value * 100).truncateToDouble() / 100;
   }
 }

@@ -94,7 +94,7 @@ class WalletView extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "₹${(walletController.dataService.profileData.value.winCoin ?? 0) + (walletController.dataService.profileData.value.gameCoin ?? 0)}",
+                          "₹${walletController.truncateToDecimalPlaces(walletController.dataService.coinData.value.totalCoin ?? 0)}",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -151,7 +151,7 @@ class WalletView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "₹${walletController.dataService.profileData.value.gameCoin ?? 0}",
+                                "₹${walletController.truncateToDecimalPlaces(walletController.dataService.coinData.value.gameCoin ?? 0)}",
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
@@ -191,7 +191,7 @@ class WalletView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "₹${walletController.dataService.profileData.value.winCoin ?? 0}",
+                                "₹${walletController.truncateToDecimalPlaces(walletController.dataService.coinData.value.winCoin ?? 0)}",
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
@@ -243,7 +243,7 @@ class WalletView extends StatelessWidget {
                         displacement: 20,
                         child: ListView(
                           children: [
-                            walletController.transactionDataList.isEmpty && !walletController.isLoading.value
+                            walletController.transactionDataList.isEmpty && !walletController.isListLoading.value
                                 ? Text(
                                     "No Wallet Data",
                                     textAlign: TextAlign.center,
@@ -391,7 +391,7 @@ class WalletView extends StatelessWidget {
                                                       ),
                                                       children: [
                                                         TextSpan(
-                                                          text: "${walletController.transactionDataList[index].currentBalance ?? 0}",
+                                                          text: "${walletController.truncateToDecimalPlaces(walletController.transactionDataList[index].currentBalance ?? 0)}",
                                                           style: TextStyle(
                                                             color: context.theme.colorScheme.onSurface,
                                                           ),
@@ -409,7 +409,7 @@ class WalletView extends StatelessWidget {
                                   ),
                             Obx(
                               () => Visibility(
-                                visible: walletController.isLoading.value,
+                                visible: walletController.isListLoading.value,
                                 child: LoadingPage.listLoading(),
                               ),
                             ),

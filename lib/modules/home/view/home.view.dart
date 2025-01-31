@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_scroll_shadow/flutter_scroll_shadow.dart';
 import 'package:get/get.dart';
 import 'dart:math' as math;
-
 import '../../../components/primaryButton.component.dart';
 import '../../../helper/lottie.helper.dart';
 
@@ -57,7 +56,7 @@ class HomeView extends StatelessWidget {
                     ),
                     Obx(
                       () => Text(
-                        "₹ ${(homeController.profileData.value.winCoin ?? 0) + (homeController.profileData.value.gameCoin ?? 0)}",
+                        "₹ ${homeController.truncateToDecimalPlaces(homeController.totalAmount.value)}",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
@@ -70,22 +69,27 @@ class HomeView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  PrimaryButtonComponent(
-                    onClick: () {},
-                    text: "History",
-                    image: AssetsUtil.getHistoryIcon(),
+              Obx(
+                () => Opacity(
+                  opacity: homeController.isFlipping.value ? 0.5 : 1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      PrimaryButtonComponent(
+                        onClick: homeController.isFlipping.value ? () {} : () => homeController.onHistoryClick(),
+                        text: "History",
+                        image: AssetsUtil.getHistoryIcon(),
+                      ),
+                      PrimaryButtonComponent(
+                        onClick: homeController.isFlipping.value ? () {} : () => homeController.onWalletClick(),
+                        text: "Wallet",
+                        image: AssetsUtil.getWalletIcon(),
+                        btnColor1: context.theme.colorScheme.primary,
+                        btnColor2: context.theme.colorScheme.primaryFixed,
+                      ),
+                    ],
                   ),
-                  PrimaryButtonComponent(
-                    onClick: () => homeController.onWalletClick(),
-                    text: "Wallet",
-                    image: AssetsUtil.getWalletIcon(),
-                    btnColor1: context.theme.colorScheme.primary,
-                    btnColor2: context.theme.colorScheme.primaryFixed,
-                  ),
-                ],
+                ),
               ),
               Stack(
                 alignment: Alignment.center,
@@ -159,197 +163,213 @@ class HomeView extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(18)),
-                  color: context.theme.colorScheme.primaryContainer.withOpacity(0.4),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Your Bet",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: context.theme.colorScheme.onSurface,
-                            ),
-                          ),
-                          MaterialButton(
-                            onPressed: () {},
-                            minWidth: 0,
-                            padding: EdgeInsets.zero,
-                            visualDensity: VisualDensity.compact,
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            child: Icon(
-                              Icons.info,
-                              size: 15,
-                              color: context.theme.colorScheme.onSurface,
-                            ),
-                          ),
-                        ],
-                      ),
+              Obx(
+                () => Opacity(
+                  opacity: homeController.isFlipping.value ? 0.5 : 1,
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(18)),
+                      color: context.theme.colorScheme.primaryContainer.withOpacity(0.4),
                     ),
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          MaterialButton(
-                            onPressed: () => homeController.decreaseAmount(),
-                            minWidth: 30,
-                            height: 30,
-                            padding: EdgeInsets.zero,
-                            visualDensity: VisualDensity.compact,
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: const BorderRadius.all(Radius.circular(100)),
-                              side: BorderSide(color: context.theme.colorScheme.outline),
-                            ),
-                            child: Icon(
-                              Icons.remove,
-                              size: 18,
-                              color: context.theme.colorScheme.onSurface,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Flexible(
-                            child: TextFieldComponent(
-                              textEditingController: homeController.amountController,
-                              hintText: "Enter Amount",
-                              textInputType: TextInputType.number,
-                              maxLength: 4,
-                              height: 45,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          MaterialButton(
-                            onPressed: () => homeController.increaseAmount(),
-                            minWidth: 30,
-                            height: 30,
-                            padding: EdgeInsets.zero,
-                            visualDensity: VisualDensity.compact,
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: const BorderRadius.all(Radius.circular(100)),
-                              side: BorderSide(color: context.theme.colorScheme.outline),
-                            ),
-                            child: Icon(
-                              Icons.add,
-                              size: 18,
-                              color: context.theme.colorScheme.onSurface,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        "*Select the amount",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: context.theme.colorScheme.outline.withOpacity(0.55),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    SizedBox(
-                      height: 30,
-                      child: ScrollShadow(
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          itemCount: homeController.amountList.length,
-                          separatorBuilder: (context, index) => const SizedBox(width: 10),
-                          itemBuilder: (context, index) => PrimaryButtonComponent(
-                            onClick: () => homeController.onAmountSelect(homeController.amountList[index]),
-                            width: 56,
-                            height: 30,
-                            text: "₹${homeController.amountList[index]}",
-                            fontSize: 14,
-                            btnColor1: context.theme.colorScheme.secondaryContainer,
-                            btnColor2: context.theme.colorScheme.secondaryContainer,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Your Bet",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: context.theme.colorScheme.onSurface,
+                                ),
+                              ),
+                              MaterialButton(
+                                onPressed: () {},
+                                minWidth: 0,
+                                padding: EdgeInsets.zero,
+                                visualDensity: VisualDensity.compact,
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                child: Icon(
+                                  Icons.info,
+                                  size: 15,
+                                  color: context.theme.colorScheme.onSurface,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
+                        const SizedBox(height: 8),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            children: [
+                              MaterialButton(
+                                onPressed: homeController.isFlipping.value ? () {} : () => homeController.decreaseAmount(),
+                                minWidth: 30,
+                                height: 30,
+                                padding: EdgeInsets.zero,
+                                visualDensity: VisualDensity.compact,
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                  side: BorderSide(color: context.theme.colorScheme.outline),
+                                ),
+                                child: Icon(
+                                  Icons.remove,
+                                  size: 18,
+                                  color: context.theme.colorScheme.onSurface,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Flexible(
+                                child: TextFieldComponent(
+                                  textEditingController: homeController.amountController,
+                                  hintText: "Enter Amount",
+                                  textInputType: TextInputType.number,
+                                  maxLength: 4,
+                                  height: 45,
+                                  enabled: !homeController.isFlipping.value,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              MaterialButton(
+                                onPressed: homeController.isFlipping.value ? () {} : () => homeController.increaseAmount(),
+                                minWidth: 30,
+                                height: 30,
+                                padding: EdgeInsets.zero,
+                                visualDensity: VisualDensity.compact,
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                  side: BorderSide(color: context.theme.colorScheme.outline),
+                                ),
+                                child: Icon(
+                                  Icons.add,
+                                  size: 18,
+                                  color: context.theme.colorScheme.onSurface,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            "*Select the amount",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: context.theme.colorScheme.outline.withOpacity(0.55),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        SizedBox(
+                          height: 30,
+                          child: ScrollShadow(
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              itemCount: homeController.amountList.length,
+                              separatorBuilder: (context, index) => const SizedBox(width: 10),
+                              itemBuilder: (context, index) => PrimaryButtonComponent(
+                                onClick: homeController.isFlipping.value ? () {} : () => homeController.onAmountSelect(homeController.amountList[index]),
+                                width: 56,
+                                height: 30,
+                                text: "₹${homeController.amountList[index]}",
+                                fontSize: 14,
+                                btnColor1: context.theme.colorScheme.secondaryContainer,
+                                btnColor2: context.theme.colorScheme.secondaryContainer,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
-              Row(
-                children: [
-                  PrimaryButtonComponent(
-                    onClick: () => homeController.onAutoPlayClick(),
-                    image: AssetsUtil.getAutoPlayIcon(),
-                    height: 40,
-                    width: 50,
-                    borderRadius: 100,
-                    btnColor1: context.theme.colorScheme.scrim,
-                    btnColor2: context.theme.colorScheme.surfaceTint,
-                  ),
-                  const SizedBox(width: 10),
-                  Flexible(
-                    child: Obx(
-                      () => PrimaryButtonComponent(
-                        onClick: () => homeController.onSelectCoinType(0),
-                        image: AssetsUtil.getHead(),
-                        imageSize: 25,
-                        gap: 8,
-                        text: "Heads",
-                        fontSize: 15,
+              Obx(
+                () => Opacity(
+                  opacity: homeController.isFlipping.value ? 0.5 : 1,
+                  child: Row(
+                    children: [
+                      PrimaryButtonComponent(
+                        onClick: homeController.isFlipping.value ? () {} : () => homeController.onAutoPlayClick(),
+                        image: AssetsUtil.getAutoPlayIcon(),
                         height: 40,
-                        width: double.infinity,
+                        width: 50,
                         borderRadius: 100,
-                        btnColor1: homeController.selectedType.value == 0 ? context.theme.colorScheme.surfaceContainerLow : context.theme.colorScheme.secondaryContainer,
-                        btnColor2: homeController.selectedType.value == 0 ? context.theme.colorScheme.surfaceContainerHigh : context.theme.colorScheme.secondaryContainer,
+                        btnColor1: context.theme.colorScheme.scrim,
+                        btnColor2: context.theme.colorScheme.surfaceTint,
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Flexible(
-                    child: Obx(
-                      () => PrimaryButtonComponent(
-                        onClick: () => homeController.onSelectCoinType(1),
-                        image: AssetsUtil.getTail(),
-                        imageSize: 25,
-                        gap: 8,
-                        text: "Tails",
-                        fontSize: 15,
-                        height: 40,
-                        width: double.infinity,
-                        borderRadius: 100,
-                        btnColor1: homeController.selectedType.value == 1 ? context.theme.colorScheme.surfaceContainerLow : context.theme.colorScheme.secondaryContainer,
-                        btnColor2: homeController.selectedType.value == 1 ? context.theme.colorScheme.surfaceContainerHigh : context.theme.colorScheme.secondaryContainer,
+                      const SizedBox(width: 10),
+                      Flexible(
+                        child: Obx(
+                          () => PrimaryButtonComponent(
+                            onClick: homeController.isFlipping.value ? () {} : () => homeController.onSelectCoinType(0),
+                            image: AssetsUtil.getHead(),
+                            imageSize: 25,
+                            gap: 8,
+                            text: "Heads",
+                            fontSize: 15,
+                            height: 40,
+                            width: double.infinity,
+                            borderRadius: 100,
+                            btnColor1: homeController.selectedType.value == 0 ? context.theme.colorScheme.surfaceContainerLow : context.theme.colorScheme.secondaryContainer,
+                            btnColor2: homeController.selectedType.value == 0 ? context.theme.colorScheme.surfaceContainerHigh : context.theme.colorScheme.secondaryContainer,
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 10),
+                      Flexible(
+                        child: Obx(
+                          () => PrimaryButtonComponent(
+                            onClick: homeController.isFlipping.value ? () {} : () => homeController.onSelectCoinType(1),
+                            image: AssetsUtil.getTail(),
+                            imageSize: 25,
+                            gap: 8,
+                            text: "Tails",
+                            fontSize: 15,
+                            height: 40,
+                            width: double.infinity,
+                            borderRadius: 100,
+                            btnColor1: homeController.selectedType.value == 1 ? context.theme.colorScheme.surfaceContainerLow : context.theme.colorScheme.secondaryContainer,
+                            btnColor2: homeController.selectedType.value == 1 ? context.theme.colorScheme.surfaceContainerHigh : context.theme.colorScheme.secondaryContainer,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
               const SizedBox(height: 40),
-              PrimaryButtonComponent(
-                onClick: homeController.onFlipCoin,
-                text: "Flip Coin",
-                fontSize: 18,
-                height: 45,
-                width: double.infinity,
-                btnColor1: context.theme.colorScheme.tertiary,
-                btnColor2: context.theme.colorScheme.tertiaryFixed,
+              Obx(
+                () => Opacity(
+                  opacity: homeController.isFlipping.value ? 0.5 : 1,
+                  child: PrimaryButtonComponent(
+                    onClick: homeController.isFlipping.value ? () {} : homeController.onFlipCoin,
+                    text: "Flip Coin",
+                    fontSize: 18,
+                    height: 45,
+                    width: double.infinity,
+                    btnColor1: context.theme.colorScheme.tertiary,
+                    btnColor2: context.theme.colorScheme.tertiaryFixed,
+                  ),
+                ),
               ),
               const SizedBox(height: 45),
               Row(

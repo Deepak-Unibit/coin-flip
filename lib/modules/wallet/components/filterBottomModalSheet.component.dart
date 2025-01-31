@@ -6,10 +6,10 @@ import '../../../components/primaryButton.component.dart';
 class FilterBottomModalSheetComponent {
   static show({
     required List filterList,
-    required RxString selectedFilter,
+    required RxInt selectedFilter,
     required Function onItemClick,
     required Function onApplyClick,
-    required Function onCancelClick,
+    required Function onClearClick,
   }) {
     return showModalBottomSheet(
       context: Get.context!,
@@ -67,7 +67,7 @@ class FilterBottomModalSheetComponent {
                 children: filterList
                     .map(
                       (amount) => MaterialButton(
-                        onPressed: () => onItemClick(amount),
+                        onPressed: () => onItemClick(filterList.indexOf(amount) + 1),
                         minWidth: 0,
                         padding: EdgeInsets.zero,
                         visualDensity: VisualDensity.compact,
@@ -83,8 +83,8 @@ class FilterBottomModalSheetComponent {
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                selectedFilter.value == amount ? context.theme.colorScheme.surfaceContainerLow : context.theme.colorScheme.secondaryContainer,
-                                selectedFilter.value == amount ? context.theme.colorScheme.surfaceContainerHigh : context.theme.colorScheme.secondaryContainer,
+                                selectedFilter.value == (filterList.indexOf(amount) + 1) ? context.theme.colorScheme.surfaceContainerLow : context.theme.colorScheme.secondaryContainer,
+                                selectedFilter.value == (filterList.indexOf(amount) + 1) ? context.theme.colorScheme.surfaceContainerHigh : context.theme.colorScheme.secondaryContainer,
                               ],
                             ),
                           ),
@@ -107,16 +107,18 @@ class FilterBottomModalSheetComponent {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 PrimaryButtonComponent(
-                  onClick: () => onCancelClick(),
-                  text: "Cancel",
-                  fontSize: 18,
+                  onClick: () => onClearClick(),
+                  text: "Clear",
+                  height: 35,
+                  width: 100,
                   btnColor1: context.theme.colorScheme.secondaryContainer.withOpacity(0.75),
                   btnColor2: context.theme.colorScheme.secondaryContainer.withOpacity(0.75),
                 ),
                 PrimaryButtonComponent(
                   onClick: () => onApplyClick(),
                   text: "Apply",
-                  fontSize: 18,
+                  height: 35,
+                  width: 100,
                   btnColor1: context.theme.colorScheme.tertiary,
                   btnColor2: context.theme.colorScheme.tertiaryFixed,
                 ),

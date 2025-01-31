@@ -12,6 +12,7 @@ class TextFieldComponent extends StatelessWidget {
     this.maxLines = 1,
     this.height = 50,
     this.textInputAction,
+    this.enabled = true,
   });
 
   final TextEditingController textEditingController;
@@ -22,6 +23,7 @@ class TextFieldComponent extends StatelessWidget {
   final int maxLines;
   final double height;
   final TextInputAction? textInputAction;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class TextFieldComponent extends StatelessWidget {
         maxLength: maxLength,
         keyboardType: textInputType,
         textInputAction: textInputAction,
+        enabled: enabled,
         decoration: InputDecoration(
           filled: true,
           fillColor: context.theme.colorScheme.primaryContainer,

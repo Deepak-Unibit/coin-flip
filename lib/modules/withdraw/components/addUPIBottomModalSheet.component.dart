@@ -81,8 +81,8 @@ class AddUPIBottomModalSheetComponent {
                   const SizedBox(height: 8),
                   TextFieldComponent(
                     textEditingController: upiIdController,
-                    hintText: "Add Coin",
-                    textInputType: TextInputType.number,
+                    hintText: "Enter ${upiName=="UPI" ? "" : "$upiName "}UPI Id",
+                    textInputType: TextInputType.text,
                     maxLength: 100,
                   ),
                 ],
