@@ -7,6 +7,8 @@ class RegexHelper{
   static RegExp pinCodeRegex = RegExp(r"^\d{6}$");
   static RegExp bankAccountNumberRegex = RegExp(r"^[0-9]{9,18}$");
   static RegExp ifscCodeRegex = RegExp(r"^[A-Z]{4}0[A-Z0-9]{6}$");
+  static RegExp amountRegex = RegExp(r"^\d+(\.\d{1,2})?$");
   static RegExp upiIdRegex = RegExp(r"^[\w.-]+@[\w.-]+$");
+  static RegExp numberRegex = RegExp(r"^-?\d+$");
 
 }

@@ -93,12 +93,14 @@ class WalletView extends StatelessWidget {
                             color: context.theme.colorScheme.onSurface,
                           ),
                         ),
-                        Text(
-                          "₹${walletController.truncateToDecimalPlaces(walletController.dataService.coinData.value.totalCoin ?? 0)}",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: context.theme.colorScheme.onSurface,
+                        Obx(
+                          () => Text(
+                            "₹${walletController.truncateToDecimalPlaces(walletController.dataService.coinData.value.totalCoin ?? 0)}",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: context.theme.colorScheme.onSurface,
+                            ),
                           ),
                         ),
                       ],
@@ -150,12 +152,14 @@ class WalletView extends StatelessWidget {
                                   color: context.theme.colorScheme.onSurface,
                                 ),
                               ),
-                              Text(
-                                "₹${walletController.truncateToDecimalPlaces(walletController.dataService.coinData.value.gameCoin ?? 0)}",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: context.theme.colorScheme.onSurface,
+                              Obx(
+                                () => Text(
+                                  "₹${walletController.truncateToDecimalPlaces(walletController.dataService.coinData.value.gameCoin ?? 0)}",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: context.theme.colorScheme.onSurface,
+                                  ),
                                 ),
                               ),
                             ],
@@ -190,12 +194,14 @@ class WalletView extends StatelessWidget {
                                   color: context.theme.colorScheme.onSurface,
                                 ),
                               ),
-                              Text(
-                                "₹${walletController.truncateToDecimalPlaces(walletController.dataService.coinData.value.winCoin ?? 0)}",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: context.theme.colorScheme.onSurface,
+                              Obx(
+                                () => Text(
+                                  "₹${walletController.truncateToDecimalPlaces(walletController.dataService.coinData.value.winCoin ?? 0)}",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: context.theme.colorScheme.onSurface,
+                                  ),
                                 ),
                               ),
                             ],

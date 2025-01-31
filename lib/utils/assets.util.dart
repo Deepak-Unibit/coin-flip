@@ -14,10 +14,7 @@ class AssetsUtil {
   static getWithdrawIcon() => 'assets/images/withdraw.png';
   static getDepositIcon() => 'assets/images/deposit.png';
   static getUPIImage() => 'assets/images/addCoinUpiImage.png';
-  static getGPay() => 'assets/images/gPay.png';
-  static getPhonePe() => 'assets/images/phonePe.png';
-  static getPaytm() => 'assets/images/paytm.png';
-  static getUPI() => 'assets/images/upi.png';
+  static getBank() => 'assets/images/bank.png';
   static getFilterIcon() => 'assets/images/filter.png';
 
   static getConfettiLottie() => 'assets/lotties/confettiAnimation.json';

@@ -10,6 +10,7 @@ class AddCoinBottomModalSheetComponent {
     required TextEditingController addCoinController,
     required List amountList,
     required Function onAmountClick,
+    required Function onAddCoin,
   }) {
     return showModalBottomSheet(
       context: Get.context!,
@@ -114,7 +115,7 @@ class AddCoinBottomModalSheetComponent {
               ),
             ),
             PrimaryButtonComponent(
-              onClick: () {},
+              onClick: () => onAddCoin(),
               text: "Add Coin",
               width: double.infinity,
               fontSize: 18,

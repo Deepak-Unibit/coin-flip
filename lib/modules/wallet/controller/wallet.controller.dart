@@ -1,5 +1,10 @@
 import 'package:flip_coin/api/call.api.dart';
+import 'dart:html' as html;
 import 'package:flip_coin/api/url.api.dart';
+import 'package:flip_coin/components/loadingPage/loadingPage.component.dart';
+import 'package:flip_coin/helper/regex.helper.dart';
+import 'package:flip_coin/helper/snackBar.helper.dart';
+import 'package:flip_coin/models/response.model.dart';
 import 'package:flip_coin/models/transaction.model.dart';
 import 'package:flip_coin/modules/wallet/components/addCoinBottomModalSheet.component.dart';
 import 'package:flip_coin/modules/wallet/components/filterBottomModalSheet.component.dart';
@@ -110,11 +115,36 @@ class WalletController extends GetxController {
       addCoinController: addCoinController,
       amountList: amountList,
       onAmountClick: onAmountSelect,
+      onAddCoin: onAddCoin, 
     );
   }
 
   void onAmountSelect(int amount) {
     addCoinController.text = "$amount";
+  }
+  
+  Future<void> onAddCoin() async {
+    addCoinController.text = addCoinController.text.trim();
+    
+    if(!RegexHelper.amountRegex.hasMatch(addCoinController.text)) {
+      SnackBarHelper.show("Please select a valid amount");
+      return;
+    }
+    
+    LoadingPage.show();
+    var resp = await ApiCall.get("${UrlApi.depositCoin}/${addCoinController.text}");
+    LoadingPage.close();
+    print(resp);
+
+    ResponseModel responseModel = ResponseModel.fromJson(resp);
+
+    if(responseModel.responseCode == 200) {
+      Get.back();
+      html.window.open(responseModel.data, '_blank');
+    }
+    else {
+      SnackBarHelper.show(responseModel.message);
+    }
   }
 
   void onWalletHistoryFilterClick() {

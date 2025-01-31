@@ -139,9 +139,26 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       return;
     }
 
+    amountController.text = amountController.text.trim();
+
+    if (!RegexHelper.numberRegex.hasMatch(amountController.text)) {
+      SnackBarHelper.show("Amount must be an integer");
+      return;
+    }
+
+    if (int.parse(amountController.text) > 5000) {
+      SnackBarHelper.show("Maximum bet amount is 5000");
+      return;
+    }
+
+    if (int.parse(amountController.text) > totalAmount.value) {
+      SnackBarHelper.show("Insufficient balance");
+      return;
+    }
+
     Map<String, dynamic> data = {
       "chooseOption": selectedType.value == 0 ? "H" : "T",
-      "amount": amountController.text.trim(),
+      "amount": amountController.text,
     };
 
     LoadingPage.show();

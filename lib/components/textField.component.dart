@@ -13,6 +13,7 @@ class TextFieldComponent extends StatelessWidget {
     this.height = 50,
     this.textInputAction,
     this.enabled = true,
+    this.prefixIcon,
   });
 
   final TextEditingController textEditingController;
@@ -24,6 +25,7 @@ class TextFieldComponent extends StatelessWidget {
   final double height;
   final TextInputAction? textInputAction;
   final bool enabled;
+  final IconData? prefixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class TextFieldComponent extends StatelessWidget {
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           prefixIcon: Icon(
-            Icons.currency_rupee_rounded,
+            prefixIcon ?? Icons.currency_rupee_rounded,
             size: 18,
             color: context.theme.colorScheme.onSurface.withOpacity(0.75),
           ),

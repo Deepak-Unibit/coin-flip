@@ -9,6 +9,10 @@ class UrlApi {
   // Wallet
   static const getCoins = "$baseUrl/api/v1/users/coins";
   static const getTransaction = "$baseUrl/api/v1/transaction/history";
+  static const addBankAccount = "$baseUrl/api/v1/users/add-account";
+  static const getAccountList = "$baseUrl/api/v1/users/account-list";
+  static const withdrawCoin = "$baseUrl/api/v1/users/coins/withdraw";
+  static const depositCoin = "$baseUrl/api/v1/users/coins/deposit";
 
   // Game
   static const flipCoin = "$baseUrl/api/v1/games/play";
