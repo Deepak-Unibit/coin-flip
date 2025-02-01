@@ -371,7 +371,68 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 45),
+              const SizedBox(height: 30),
+              Row(
+                children: [
+                  Flexible(
+                    child: MaterialButton(
+                      onPressed: () => homeController.onReferClick(),
+                      minWidth: 0,
+                      padding: EdgeInsets.zero,
+                      visualDensity: VisualDensity.compact,
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      elevation: 0,
+                      child: Container(
+                        width: double.infinity,
+                        height: 40,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          color: context.theme.colorScheme.surfaceContainer,
+                          border: Border.all(color: context.theme.colorScheme.primary),
+                        ),
+                        child: Text(
+                          "Refer and earn",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: context.theme.colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  MaterialButton(
+                    onPressed: () => homeController.onCopyClick(),
+                    minWidth: 0,
+                    padding: EdgeInsets.zero,
+                    visualDensity: VisualDensity.compact,
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    elevation: 0,
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
+                        color: context.theme.colorScheme.surfaceContainer,
+                        border: Border.all(color: context.theme.colorScheme.primary),
+                      ),
+                      child: Icon(
+                        Icons.copy,
+                        size: 18,
+                        color: context.theme.colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

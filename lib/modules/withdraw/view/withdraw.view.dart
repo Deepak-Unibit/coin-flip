@@ -152,6 +152,7 @@ class WithdrawView extends StatelessWidget {
                         color: context.theme.colorScheme.primaryContainer.withOpacity(0.4),
                       ),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             "Withdraw Options",
@@ -170,18 +171,19 @@ class WithdrawView extends StatelessWidget {
                             highlightColor: Colors.transparent,
                             splashColor: Colors.transparent,
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            child: Column(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Image.asset(
                                   AssetsUtil.getBank(),
                                   height: 50,
                                   width: 50,
                                 ),
-                                const SizedBox(height: 3),
+                                const SizedBox(width: 10),
                                 Text(
                                   "Bank Account",
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     color: context.theme.colorScheme.onSurface,
                                   ),

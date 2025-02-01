@@ -128,7 +128,6 @@ class WithdrawController extends GetxController {
     var resp = await ApiCall.post(UrlApi.withdrawCoin, data);
     LoadingPage.close();
 
-    print(resp);
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 

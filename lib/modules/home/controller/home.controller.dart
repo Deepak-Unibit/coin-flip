@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
-
 import 'package:flip_coin/helper/regex.helper.dart';
 import 'package:flip_coin/helper/snackBar.helper.dart';
 import 'package:flip_coin/models/game.model.dart';
@@ -8,13 +6,14 @@ import 'package:flip_coin/models/profile.model.dart';
 import 'package:flip_coin/modules/gameHistory/view/gameHistory.view.dart';
 import 'package:flip_coin/modules/home/components/autoPlayDialog.component.dart';
 import 'package:flip_coin/modules/home/components/resultDialog.component.dart';
+import 'package:flip_coin/modules/refer/view/refer.view.dart';
 import 'package:flip_coin/modules/wallet/view/wallet.view.dart';
 import 'package:flip_coin/services/data.service.dart';
 import 'package:flip_coin/utils/routes.util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:js' as js;
-
+import 'dart:html' as html;
 import '../../../api/call.api.dart';
 import '../../../api/url.api.dart';
 import '../../../components/loadingPage/loadingPage.component.dart';
@@ -52,20 +51,20 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      // var state = js.JsObject.fromBrowserObject(js.context['state']);
-      // Map<String, dynamic> userData = jsonDecode(state['userData']);
-      // UserModel userModel = UserModel.fromJson(userData);
-      //
-      // print(userData);
+      var state = js.JsObject.fromBrowserObject(js.context['state']);
+      Map<String, dynamic> userData = jsonDecode(state['userData']);
+      UserModel userModel = UserModel.fromJson(userData);
+
+      print(userData);
 
       // Development
-      UserModel userModel = UserModel(
-        id: 12,
-        // id: 1146609300,
-        firstName: "New3 Kumar",
-        lastName: "Behera",
-        allowsWriteToPm: true,
-      );
+      // UserModel userModel = UserModel(
+      //   id: 12,
+      //   // id: 1146609300,
+      //   firstName: "New3 Kumar",
+      //   lastName: "Behera",
+      //   allowsWriteToPm: true,
+      // );
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
         Future.delayed(200.milliseconds, () => login(userModel));
       }
@@ -277,6 +276,21 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     //   return;
     // }
     singleWinAmount.value = singleWinAmount.value + 10;
+  }
+
+  void onReferClick() {
+    RoutesUtil.to(()=>ReferView());
+  }
+
+  void onCopyClick() {
+    html.window.navigator.clipboard
+        ?.writeText(
+            "https://t.me/Wheel24Bot?start=ReferralCode \n\n🎁I've won ₹500 from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
+        .then((_) {
+      SnackBarHelper.show("Copied to Clipboard");
+    }).catchError((e) {
+      print("Failed to copy text to clipboard: $e");
+    });
   }
 
   double truncateToDecimalPlaces(num value) {
