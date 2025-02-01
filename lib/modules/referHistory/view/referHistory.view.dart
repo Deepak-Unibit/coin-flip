@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 import '../../../components/loadingPage/loadingPage.component.dart';
+import '../../../helper/date.helper.dart';
 
 class ReferHistoryView extends StatelessWidget {
   ReferHistoryView({super.key});
@@ -139,7 +140,7 @@ class ReferHistoryView extends StatelessWidget {
                       onEndOfPage: () => referHistoryController.onScrollEnd(),
                       child: ListView(
                         children: [
-                          referHistoryController.gameHistoryDataList.isEmpty && !referHistoryController.isListLoading.value
+                          referHistoryController.referDataList.isEmpty && !referHistoryController.isListLoading.value
                               ? Text(
                                   "No Refer History",
                                   textAlign: TextAlign.center,
@@ -154,7 +155,7 @@ class ReferHistoryView extends StatelessWidget {
                                   shrinkWrap: true,
                                   primary: false,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: referHistoryController.gameHistoryDataList.length,
+                                  itemCount: referHistoryController.referDataList.length,
                                   separatorBuilder: (context, index) => Divider(
                                     height: 20,
                                     color: context.theme.colorScheme.primary,
@@ -162,61 +163,61 @@ class ReferHistoryView extends StatelessWidget {
                                   itemBuilder: (context, index) => Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      // SizedBox(
-                                      //   width: 45,
-                                      //   child: Text(
-                                      //     gameHistoryController.gameHistoryDataList[index].chooseOption == "H" ? "Head" : "Tail",
-                                      //     textAlign: TextAlign.center,
-                                      //     style: TextStyle(
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w500,
-                                      //       color: context.theme.colorScheme.onSurface,
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                      // const SizedBox(width: 5),
-                                      // Flexible(
-                                      //   child: SizedBox(
-                                      //     width: double.infinity,
-                                      //     child: Text(
-                                      //       "₹${gameHistoryController.truncateToDecimalPlaces(gameHistoryController.gameHistoryDataList[index].joinAmount ?? 0)}",
-                                      //       textAlign: TextAlign.center,
-                                      //       style: TextStyle(
-                                      //         fontSize: 12,
-                                      //         fontWeight: FontWeight.w500,
-                                      //         color: context.theme.colorScheme.onSurface,
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                      // const SizedBox(width: 5),
-                                      // Flexible(
-                                      //   child: SizedBox(
-                                      //     width: double.infinity,
-                                      //     child: Text(
-                                      //       "₹${gameHistoryController.truncateToDecimalPlaces(gameHistoryController.gameHistoryDataList[index].winAmount ?? 0)}",
-                                      //       textAlign: TextAlign.center,
-                                      //       style: TextStyle(
-                                      //         fontSize: 12,
-                                      //         fontWeight: FontWeight.w500,
-                                      //         color: gameHistoryController.gameHistoryDataList[index].isWin ?? false ? context.theme.colorScheme.scrim : context.theme.colorScheme.onSurface,
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                      // const SizedBox(width: 5),
-                                      // SizedBox(
-                                      //   width: 130,
-                                      //   child: Text(
-                                      //     DateHelper().dateFormatNull(date: gameHistoryController.gameHistoryDataList[index].createdAt ?? "", format: "dd MMM yyyy hh:mm a"),
-                                      //     textAlign: TextAlign.center,
-                                      //     style: TextStyle(
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w500,
-                                      //       color: context.theme.colorScheme.onSurface,
-                                      //     ),
-                                      //   ),
-                                      // ),
+                                      SizedBox(
+                                        width: 45,
+                                        child: Text(
+                                          referHistoryController.referDataList[index].updatedAt??"",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: context.theme.colorScheme.onSurface,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Flexible(
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          child: Text(
+                                            "₹${referHistoryController.referDataList[index].referCode ?? 0}",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                              color: context.theme.colorScheme.onSurface,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Flexible(
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          child: Text(
+                                            "₹${referHistoryController.referDataList[index].newTid ?? "--"}",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                              color: referHistoryController.referDataList[index].isBonusSend ?? false ? context.theme.colorScheme.scrim : context.theme.colorScheme.onSurface,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      SizedBox(
+                                        width: 130,
+                                        child: Text(
+                                          DateHelper().dateFormatNull(date: referHistoryController.referDataList[index].createdAt ?? "", format: "dd MMM yyyy hh:mm a"),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: context.theme.colorScheme.onSurface,
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

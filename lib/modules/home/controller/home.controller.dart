@@ -80,7 +80,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   Future<void> login(UserModel userModel) async {
-    Map<String, dynamic> data = {"tid": userModel.id.toString(), "firstName": userModel.firstName, "lastName": userModel.lastName};
+    Map<String, dynamic> data = {
+      "tid": userModel.id.toString(),
+    };
+
+    if (userModel.firstName != "") {
+      data["firstName"] = userModel.firstName;
+    }
+
+    if (userModel.lastName != "") {
+      data["lastName"] = userModel.lastName;
+    }
 
     LoadingPage.show();
     var resp = await ApiCall.post(UrlApi.login, data);
@@ -92,6 +102,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (profileModel.responseCode == 200) {
       profileData.value = profileModel.data ?? ProfileData();
       dataService.profileData = profileModel.data ?? ProfileData();
+      bool isSettingLoaded = await dataService.getSettings();
+      if (!isSettingLoaded) {
+        await dataService.getSettings();
+      }
       await dataService.getCoins();
       totalAmount.value = (dataService.coinData.value.totalCoin ?? 0.0) as double;
       LoadingPage.close();
@@ -358,8 +372,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       final String facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(message)}';
       UrlLauncherHelper.launchLink(facebookUrl);
     } else {
-      final String telegramUrl = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${profileData.value.referCode ?? ""}} %0A%0A🎁I've won ₹500 from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
-     UrlLauncherHelper.launchLink(telegramUrl);
+      final String telegramUrl =
+          "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${profileData.value.referCode ?? ""}} %0A%0A🎁I've won ₹500 from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+      UrlLauncherHelper.launchLink(telegramUrl);
     }
   }
 

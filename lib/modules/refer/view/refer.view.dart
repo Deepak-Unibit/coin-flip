@@ -171,7 +171,7 @@ class ReferView extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: "₹ 20",
+                            text: "₹ ${referController.dataService.settingsData.signupReferBonus??0}",
                             style: TextStyle(
                               color: context.theme.colorScheme.secondary,
                             ),
@@ -185,7 +185,7 @@ class ReferView extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         color: context.theme.colorScheme.secondary,
                       ),
                     ),
@@ -234,14 +234,11 @@ class ReferView extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 30),
-                    MaterialButton(
-                      onPressed: () {},
-                      minWidth: 0,
-                      padding: EdgeInsets.zero,
-                      visualDensity: VisualDensity.compact,
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    Tooltip(
+                      message: "https://t.me/Wheel24Bot?start=ReferralCode I've won ₹500 from this Game!🎁 \nClick URL and play with me!💰Let's stike it rich together!💰",
+                      triggerMode: TooltipTriggerMode.tap,
+                      showDuration: 15.seconds,
+                      decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(10)), color: context.theme.colorScheme.surfaceContainer.withOpacity(0.85)),
                       child: Text(
                         "How it works?",
                         textAlign: TextAlign.center,
