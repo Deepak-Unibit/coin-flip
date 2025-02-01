@@ -358,7 +358,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       final String facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(message)}';
       UrlLauncherHelper.launchLink(facebookUrl);
     } else {
-     UrlLauncherHelper.launchLink(message);
+      final String telegramUrl = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${profileData.value.referCode ?? ""}} %0A%0A🎁I've won ₹500 from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+     UrlLauncherHelper.launchLink(telegramUrl);
     }
   }
 
