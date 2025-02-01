@@ -40,7 +40,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   TextEditingController amountController = TextEditingController(text: "10");
   RxInt selectedType = 0.obs;
   List<int> amountList = [50, 100, 200, 500, 1000];
-  RxInt selectedAmount = 10.obs;
+  int selectedAmount = 10;
   List<int> roundList = [10, 100, 500, 1000, 5000, 10000];
   RxInt selectedRound = 10.obs;
   RxBool cashDecreaseSwitch = false.obs;
@@ -55,20 +55,20 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      // var state = js.JsObject.fromBrowserObject(js.context['state']);
-      // Map<String, dynamic> userData = jsonDecode(state['userData']);
-      // UserModel userModel = UserModel.fromJson(userData);
-      //
-      // print(userData);
+      var state = js.JsObject.fromBrowserObject(js.context['state']);
+      Map<String, dynamic> userData = jsonDecode(state['userData']);
+      UserModel userModel = UserModel.fromJson(userData);
+
+      print(userData);
 
       // Development
-      UserModel userModel = UserModel(
-        id: 12,
-        // id: 1146609300,
-        firstName: "New3 Kumar",
-        lastName: "Behera",
-        allowsWriteToPm: true,
-      );
+      // UserModel userModel = UserModel(
+      //   id: 12,
+      //   // id: 1146609300,
+      //   firstName: "New3 Kumar",
+      //   lastName: "Behera",
+      //   allowsWriteToPm: true,
+      // );
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
         Future.delayed(200.milliseconds, () => login(userModel));
       }
@@ -111,24 +111,29 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void decreaseAmount() {
-    if (selectedAmount.value <= 10) {
+    selectedAmount = int.parse(amountController.text);
+    if (selectedAmount <= 10) {
       return;
     }
-    selectedAmount.value = selectedAmount.value - 10;
-    amountController.text = "${selectedAmount.value}";
+    if (selectedAmount-1 <= 0) {
+      return;
+    }
+    selectedAmount = selectedAmount - 10;
+    amountController.text = "$selectedAmount";
   }
 
   void increaseAmount() {
-    if (selectedAmount.value >= 1000) {
+    selectedAmount = int.parse(amountController.text);
+    if (selectedAmount >= 5000) {
       return;
     }
-    selectedAmount.value = selectedAmount.value + 10;
-    amountController.text = "${selectedAmount.value}";
+    selectedAmount = selectedAmount + 10;
+    amountController.text = "$selectedAmount";
   }
 
   void onAmountSelect(int amount) {
-    selectedAmount.value = amount;
-    amountController.text = "${selectedAmount.value}";
+    selectedAmount = amount;
+    amountController.text = "$selectedAmount";
   }
 
   void onSelectCoinType(int value) {
@@ -288,10 +293,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void addCoin() {
-    addCoinController.text = "100";
+    addCoinController.text = "300";
     AddCoinBottomModalSheetComponent.show(
       addCoinController: addCoinController,
-      amountList: [100, 500, 1000],
+      amountList: [300, 500, 1000],
       onAmountClick: onAddCoinAmountSelect,
       onAddCoin: onAddCoin,
     );

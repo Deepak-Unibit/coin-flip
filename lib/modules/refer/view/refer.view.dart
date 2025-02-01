@@ -57,6 +57,27 @@ class ReferView extends StatelessWidget {
                         color: context.theme.colorScheme.onSurface,
                       ),
                     ),
+                    const Spacer(),
+                    Column(
+                      children: [
+                        Text(
+                          "Your total earnings",
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: context.theme.colorScheme.onSurface,
+                          ),
+                        ),
+                        Text(
+                          "₹ 500",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: context.theme.colorScheme.secondary,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -85,75 +106,9 @@ class ReferView extends StatelessWidget {
                       ),
                     ),
                     Stack(
-                      alignment: Alignment.bottomCenter,
                       children: [
-                        Image.asset(
-                          AssetsUtil.getReferImage(),
-                          height: 280,
-                        ),
-                        Container(
-                          height: 120,
-                          width: 250,
-                          padding: const EdgeInsets.only(top: 15),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                AssetsUtil.getReferCoupon(),
-                              ),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Your Referral Code",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: context.theme.colorScheme.surfaceBright,
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                "XYZXYZ",
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
-                                  color: context.theme.colorScheme.primaryFixed,
-                                ),
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "Tap to copy",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: context.theme.colorScheme.surfaceBright,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  MaterialButton(
-                                    onPressed: () {},
-                                    minWidth: 0,
-                                    padding: EdgeInsets.zero,
-                                    visualDensity: VisualDensity.compact,
-                                    highlightColor: Colors.transparent,
-                                    splashColor: Colors.transparent,
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    child: Icon(
-                                      Icons.copy,
-                                      size: 14,
-                                      color: context.theme.colorScheme.primaryFixed,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+                        Image.asset(AssetsUtil.getShiningStart()),
+                        Image.asset(AssetsUtil.getReferAnimation()),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -185,6 +140,15 @@ class ReferView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
+                    Text(
+                      "Invite friends",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: context.theme.colorScheme.secondary,
+                      ),
+                    ),
                     Text(
                       "You and you friend will get bonuses",
                       textAlign: TextAlign.center,
@@ -248,6 +212,19 @@ class ReferView extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        40,
+                        (index) => Container(
+                          color: index % 2 == 0 ? Colors.transparent : context.theme.colorScheme.outline.withOpacity(0.5),
+                          height: 1,
+                          width: 3,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
                   ],
                 ),
               ),

@@ -18,7 +18,7 @@ class WalletController extends GetxController {
   DataService dataService = Get.find<DataService>();
   TextEditingController addCoinController = TextEditingController();
   RxList<TransactionData> transactionDataList = <TransactionData>[].obs;
-  List<int> amountList = [100, 500, 1000];
+  List<int> amountList = [300, 500, 1000];
   List<String> filterList = ["All", "Deposit", "Withdrawal", "Deposit and Withdrawal", "Game", "Admin", "Refer"];
   RxInt selectedFilter = 100.obs;
   RxBool isListLoading = false.obs;
@@ -110,27 +110,27 @@ class WalletController extends GetxController {
   }
 
   void onAddCoinClick() {
-    addCoinController.text = "100";
+    addCoinController.text = "300";
     AddCoinBottomModalSheetComponent.show(
       addCoinController: addCoinController,
       amountList: amountList,
       onAmountClick: onAmountSelect,
-      onAddCoin: onAddCoin, 
+      onAddCoin: onAddCoin,
     );
   }
 
   void onAmountSelect(int amount) {
     addCoinController.text = "$amount";
   }
-  
+
   Future<void> onAddCoin() async {
     addCoinController.text = addCoinController.text.trim();
-    
-    if(!RegexHelper.amountRegex.hasMatch(addCoinController.text)) {
+
+    if (!RegexHelper.amountRegex.hasMatch(addCoinController.text)) {
       SnackBarHelper.show("Please select a valid amount");
       return;
     }
-    
+
     LoadingPage.show();
     var resp = await ApiCall.get("${UrlApi.depositCoin}/${addCoinController.text}");
     LoadingPage.close();
@@ -138,17 +138,15 @@ class WalletController extends GetxController {
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
-    if(responseModel.responseCode == 200) {
+    if (responseModel.responseCode == 200) {
       Get.back();
       UrlLauncherHelper.launchLink(responseModel.data);
-    }
-    else {
+    } else {
       SnackBarHelper.show(responseModel.message);
     }
   }
 
   void onWalletHistoryFilterClick() {
-
     FilterBottomModalSheetComponent.show(
       filterList: filterList,
       selectedFilter: selectedFilter,

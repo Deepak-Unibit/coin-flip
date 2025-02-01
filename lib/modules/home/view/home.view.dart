@@ -373,62 +373,24 @@ class HomeView extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(
-                    child: MaterialButton(
-                      onPressed: () => homeController.onReferClick(),
-                      minWidth: 0,
-                      padding: EdgeInsets.zero,
-                      visualDensity: VisualDensity.compact,
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      elevation: 0,
-                      child: Container(
-                        width: double.infinity,
-                        height: 40,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                          color: context.theme.colorScheme.surfaceContainer,
-                          border: Border.all(color: context.theme.colorScheme.primary),
-                        ),
-                        child: Text(
-                          "Refer and earn",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: context.theme.colorScheme.onSurface,
-                          ),
-                        ),
-                      ),
-                    ),
+                  PrimaryButtonComponent(
+                    onClick: () {},
+                    text: "Switch to Demo",
+                    image: AssetsUtil.getSwitchIcon(),
+                    fontSize: 14,
+                    imageSize: 25,
+                    width: 140,
                   ),
-                  const SizedBox(width: 10),
-                  MaterialButton(
-                    onPressed: () => homeController.onCopyClick(),
-                    minWidth: 0,
-                    padding: EdgeInsets.zero,
-                    visualDensity: VisualDensity.compact,
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    elevation: 0,
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(8)),
-                        color: context.theme.colorScheme.surfaceContainer,
-                        border: Border.all(color: context.theme.colorScheme.primary),
-                      ),
-                      child: Icon(
-                        Icons.copy,
-                        size: 18,
-                        color: context.theme.colorScheme.onSurface,
-                      ),
-                    ),
+                  PrimaryButtonComponent(
+                    onClick: () => homeController.onReferClick(),
+                    text: "Refer & Earn",
+                    image: AssetsUtil.getReferIcon(),
+                    fontSize: 14,
+                    imageSize: 25,
+                    btnColor1: context.theme.colorScheme.primary,
+                    btnColor2: context.theme.colorScheme.primaryFixed,
                   ),
                 ],
               ),

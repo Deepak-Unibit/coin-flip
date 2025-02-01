@@ -16,8 +16,9 @@ class AssetsUtil {
   static getUPIImage() => 'assets/images/addCoinUpiImage.png';
   static getBank() => 'assets/images/bank.png';
   static getFilterIcon() => 'assets/images/filter.png';
-  static getReferImage() => 'assets/images/referImage.png';
-  static getReferCoupon() => 'assets/images/referCoupon.png';
+  static getShiningStart() => 'assets/images/shiningStars.png';
+  static getSwitchIcon() => 'assets/images/switchIcon.png';
+  static getReferIcon() => 'assets/images/referIcon.png';
 
   static getConfettiLottie() => 'assets/lotties/confettiAnimation.json';
   static getGlowingLottie() => 'assets/lotties/glowingAnimation.json';
@@ -25,4 +26,5 @@ class AssetsUtil {
   static getGameCoinAnimation() => 'assets/lotties/gameCoinAnimation.gif';
   static getWinCoinAnimation() => 'assets/lotties/winCoinAnimation.gif';
   static getLostAnimation() => 'assets/lotties/lostAnimation.json';
+  static getReferAnimation() => 'assets/lotties/referAnimation.gif';
 }
