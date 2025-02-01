@@ -100,8 +100,8 @@ class WithdrawView extends StatelessWidget {
                                 ),
                               ),
                               Obx(
-                                  ()=> Text(
-                                  "₹${withdrawController.truncateToDecimalPlaces(withdrawController.dataService.coinData.value.winCoin??0)}",
+                                () => Text(
+                                  "₹${withdrawController.truncateToDecimalPlaces(withdrawController.dataService.coinData.value.winCoin ?? 0)}",
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
@@ -181,7 +181,7 @@ class WithdrawView extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
-                                  "Bank Account",
+                                  "Add Bank Account",
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
@@ -315,7 +315,7 @@ class WithdrawView extends StatelessWidget {
                                                   ),
                                                 ),
                                                 Obx(
-                                                  ()=> Icon(
+                                                  () => Icon(
                                                     withdrawController.selectedAccount.value == withdrawController.bankAccountDataList[index].id
                                                         ? Icons.radio_button_checked_outlined
                                                         : Icons.radio_button_unchecked_outlined,

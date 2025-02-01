@@ -16,6 +16,8 @@ class AssetsUtil {
   static getUPIImage() => 'assets/images/addCoinUpiImage.png';
   static getBank() => 'assets/images/bank.png';
   static getFilterIcon() => 'assets/images/filter.png';
+  static getReferImage() => 'assets/images/referImage.png';
+  static getReferCoupon() => 'assets/images/referCoupon.png';
 
   static getConfettiLottie() => 'assets/lotties/confettiAnimation.json';
   static getGlowingLottie() => 'assets/lotties/glowingAnimation.json';

@@ -17,12 +17,16 @@ import 'dart:html' as html;
 import '../../../api/call.api.dart';
 import '../../../api/url.api.dart';
 import '../../../components/loadingPage/loadingPage.component.dart';
+import '../../../helper/urlLauncher.helper.dart';
+import '../../../models/response.model.dart';
 import '../../../models/user.model.dart';
+import '../../wallet/components/addCoinBottomModalSheet.component.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
   DataService dataService = Get.find<DataService>();
   Rx<ProfileData> profileData = ProfileData().obs;
   RxDouble totalAmount = 0.0.obs;
+  TextEditingController addCoinController = TextEditingController();
 
   // Animation
   final Rxn<AnimationController> _controller = Rxn<AnimationController>();
@@ -36,7 +40,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   TextEditingController amountController = TextEditingController(text: "10");
   RxInt selectedType = 0.obs;
   List<int> amountList = [50, 100, 200, 500, 1000];
-  RxInt selectedAmount = 50.obs;
+  RxInt selectedAmount = 10.obs;
   List<int> roundList = [10, 100, 500, 1000, 5000, 10000];
   RxInt selectedRound = 10.obs;
   RxBool cashDecreaseSwitch = false.obs;
@@ -51,20 +55,20 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      UserModel userModel = UserModel.fromJson(userData);
-
-      print(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // UserModel userModel = UserModel.fromJson(userData);
+      //
+      // print(userData);
 
       // Development
-      // UserModel userModel = UserModel(
-      //   id: 12,
-      //   // id: 1146609300,
-      //   firstName: "New3 Kumar",
-      //   lastName: "Behera",
-      //   allowsWriteToPm: true,
-      // );
+      UserModel userModel = UserModel(
+        id: 12,
+        // id: 1146609300,
+        firstName: "New3 Kumar",
+        lastName: "Behera",
+        allowsWriteToPm: true,
+      );
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
         Future.delayed(200.milliseconds, () => login(userModel));
       }
@@ -152,6 +156,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (int.parse(amountController.text) > totalAmount.value) {
       SnackBarHelper.show("Insufficient balance");
+      addCoin();
       return;
     }
 
@@ -279,13 +284,49 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void onReferClick() {
-    RoutesUtil.to(()=>ReferView());
+    RoutesUtil.to(() => ReferView());
+  }
+
+  void addCoin() {
+    addCoinController.text = "100";
+    AddCoinBottomModalSheetComponent.show(
+      addCoinController: addCoinController,
+      amountList: [100, 500, 1000],
+      onAmountClick: onAddCoinAmountSelect,
+      onAddCoin: onAddCoin,
+    );
+  }
+
+  void onAddCoinAmountSelect(int amount) {
+    addCoinController.text = "$amount";
+  }
+
+  Future<void> onAddCoin() async {
+    addCoinController.text = addCoinController.text.trim();
+
+    if (!RegexHelper.amountRegex.hasMatch(addCoinController.text)) {
+      SnackBarHelper.show("Please select a valid amount");
+      return;
+    }
+
+    LoadingPage.show();
+    var resp = await ApiCall.get("${UrlApi.depositCoin}/${addCoinController.text}");
+    LoadingPage.close();
+    print(resp);
+
+    ResponseModel responseModel = ResponseModel.fromJson(resp);
+
+    if (responseModel.responseCode == 200) {
+      Get.back();
+      UrlLauncherHelper.launchLink(responseModel.data);
+    } else {
+      SnackBarHelper.show(responseModel.message);
+    }
   }
 
   void onCopyClick() {
     html.window.navigator.clipboard
-        ?.writeText(
-            "https://t.me/Wheel24Bot?start=ReferralCode \n\n🎁I've won ₹500 from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
+        ?.writeText("https://t.me/Wheel24Bot?start=ReferralCode \n\n🎁I've won ₹500 from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
         .then((_) {
       SnackBarHelper.show("Copied to Clipboard");
     }).catchError((e) {

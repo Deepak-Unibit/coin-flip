@@ -1,3 +1,5 @@
+import 'package:flip_coin/components/primaryButton.component.dart';
+import 'package:flip_coin/utils/assets.util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -80,6 +82,170 @@ class ReferView extends StatelessWidget {
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Image.asset(
+                          AssetsUtil.getReferImage(),
+                          height: 280,
+                        ),
+                        Container(
+                          height: 120,
+                          width: 250,
+                          padding: const EdgeInsets.only(top: 15),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(
+                                AssetsUtil.getReferCoupon(),
+                              ),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Your Referral Code",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: context.theme.colorScheme.surfaceBright,
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                "XYZXYZ",
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700,
+                                  color: context.theme.colorScheme.primaryFixed,
+                                ),
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    "Tap to copy",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      color: context.theme.colorScheme.surfaceBright,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  MaterialButton(
+                                    onPressed: () {},
+                                    minWidth: 0,
+                                    padding: EdgeInsets.zero,
+                                    visualDensity: VisualDensity.compact,
+                                    highlightColor: Colors.transparent,
+                                    splashColor: Colors.transparent,
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    child: Icon(
+                                      Icons.copy,
+                                      size: 14,
+                                      color: context.theme.colorScheme.primaryFixed,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    PrimaryButtonComponent(
+                      onClick: () {},
+                      text: "Send Invite",
+                      width: double.infinity,
+                      btnColor1: context.theme.colorScheme.tertiary,
+                      btnColor2: context.theme.colorScheme.tertiaryFixed,
+                    ),
+                    const SizedBox(height: 15),
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: "1 Invite ",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          color: context.theme.colorScheme.onSurface,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "₹ 20",
+                            style: TextStyle(
+                              color: context.theme.colorScheme.secondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      "You and you friend will get bonuses",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: context.theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: "Total Refer : ",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: context.theme.colorScheme.onSurface,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: "25",
+                                style: TextStyle(
+                                  color: context.theme.colorScheme.secondary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        PrimaryButtonComponent(
+                          onClick: () {},
+                          text: "View",
+                          width: 56,
+                          height: 30,
+                          fontSize: 14,
+                          btnColor1: context.theme.colorScheme.tertiary,
+                          btnColor2: context.theme.colorScheme.tertiaryFixed,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    MaterialButton(
+                      onPressed: () {},
+                      minWidth: 0,
+                      padding: EdgeInsets.zero,
+                      visualDensity: VisualDensity.compact,
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      child: Text(
+                        "How it works?",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: context.theme.colorScheme.onSurface,
+                        ),
                       ),
                     ),
                   ],
