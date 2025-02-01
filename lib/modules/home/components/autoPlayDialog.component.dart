@@ -68,7 +68,6 @@ class AutoPlayDialogComponent {
                       visualDensity: VisualDensity.compact,
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       child: Icon(
                         Icons.close,
                         size: 20,
@@ -202,7 +201,7 @@ class AutoPlayDialogComponent {
                       () => Opacity(
                         opacity: cashDecreaseSwitch.value ? 1 : 0.5,
                         child: MaterialButton(
-                          onPressed: cashDecreaseSwitch.value ? ()=>onDecreaseCashDecrease() : (){},
+                          onPressed: cashDecreaseSwitch.value ? () => onDecreaseCashDecrease() : () {},
                           minWidth: 24,
                           height: 24,
                           padding: EdgeInsets.zero,
@@ -240,7 +239,7 @@ class AutoPlayDialogComponent {
                       () => Opacity(
                         opacity: cashDecreaseSwitch.value ? 1 : 0.5,
                         child: MaterialButton(
-                          onPressed: cashDecreaseSwitch.value ? ()=>onIncreaseCashDecrease() : (){},
+                          onPressed: cashDecreaseSwitch.value ? () => onIncreaseCashDecrease() : () {},
                           minWidth: 24,
                           height: 24,
                           padding: EdgeInsets.zero,
@@ -305,7 +304,7 @@ class AutoPlayDialogComponent {
                       () => Opacity(
                         opacity: singleWinSwitch.value ? 1 : 0.5,
                         child: MaterialButton(
-                          onPressed: singleWinSwitch.value ? ()=>onDecreaseSingleWin() : (){},
+                          onPressed: singleWinSwitch.value ? () => onDecreaseSingleWin() : () {},
                           minWidth: 24,
                           height: 24,
                           padding: EdgeInsets.zero,
@@ -343,7 +342,7 @@ class AutoPlayDialogComponent {
                       () => Opacity(
                         opacity: singleWinSwitch.value ? 1 : 0.5,
                         child: MaterialButton(
-                          onPressed: singleWinSwitch.value ? ()=>onIncreaseSingleWin() : (){},
+                          onPressed: singleWinSwitch.value ? () => onIncreaseSingleWin() : () {},
                           minWidth: 24,
                           height: 24,
                           padding: EdgeInsets.zero,

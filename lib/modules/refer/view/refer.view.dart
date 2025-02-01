@@ -1,10 +1,13 @@
 import 'package:flip_coin/components/primaryButton.component.dart';
+import 'package:flip_coin/modules/refer/controller/refer.controller.dart';
 import 'package:flip_coin/utils/assets.util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ReferView extends StatelessWidget {
-  const ReferView({super.key});
+  ReferView({super.key});
+
+  final ReferController referController = ReferController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,6 @@ class ReferView extends StatelessWidget {
                             visualDensity: VisualDensity.compact,
                             highlightColor: Colors.transparent,
                             splashColor: Colors.transparent,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             child: Icon(
                               Icons.arrow_back,
                               size: 20,
@@ -69,7 +71,7 @@ class ReferView extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "₹ 500",
+                          "₹ ${referController.truncateToDecimalPlaces(referController.dataService.profileData.referEarn ?? 0)}",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -112,12 +114,50 @@ class ReferView extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    PrimaryButtonComponent(
-                      onClick: () {},
-                      text: "Send Invite",
-                      width: double.infinity,
-                      btnColor1: context.theme.colorScheme.tertiary,
-                      btnColor2: context.theme.colorScheme.tertiaryFixed,
+                    Row(
+                      children: [
+                        Flexible(
+                          child: PrimaryButtonComponent(
+                            onClick: () => referController.onInvite(),
+                            text: "Send Invite",
+                            width: double.infinity,
+                            btnColor1: context.theme.colorScheme.tertiary,
+                            btnColor2: context.theme.colorScheme.tertiaryFixed,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        MaterialButton(
+                          onPressed: () => referController.onCopyClick(),
+                          minWidth: 0,
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          elevation: 0,
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(8)),
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  context.theme.colorScheme.tertiary,
+                                  context.theme.colorScheme.tertiaryFixed,
+                                ],
+                              ),
+                              border: Border.all(color: context.theme.colorScheme.outline.withOpacity(0.5)),
+                            ),
+                            child: Icon(
+                              Icons.copy,
+                              size: 18,
+                              color: context.theme.colorScheme.onSurface,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 15),
                     RichText(
@@ -173,7 +213,7 @@ class ReferView extends StatelessWidget {
                             ),
                             children: [
                               TextSpan(
-                                text: "25",
+                                text: "${referController.dataService.profileData.referCount ?? 0}",
                                 style: TextStyle(
                                   color: context.theme.colorScheme.secondary,
                                 ),
@@ -183,7 +223,7 @@ class ReferView extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         PrimaryButtonComponent(
-                          onClick: () {},
+                          onClick: () => referController.onViewRefer(),
                           text: "View",
                           width: 56,
                           height: 30,

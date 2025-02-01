@@ -61,7 +61,6 @@ class AddBankDialogComponent {
                       visualDensity: VisualDensity.compact,
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       child: Icon(
                         Icons.close,
                         size: 20,

@@ -6,9 +6,9 @@ class AssetsUtil {
   static getWalletIcon() => 'assets/images/walletIcon.png';
   static getAutoPlayIcon() => 'assets/images/autoPlayIcon.png';
   static getBetCoinIcon() => 'assets/images/betCoin.png';
-  static getFacebookIcon() => 'assets/images/facebookIcon.png';
-  static getWhatsAppIcon() => 'assets/images/whatsAppIcon.png';
-  static getXIcon() => 'assets/images/xIcon.png';
+  static getFacebookIcon() => 'assets/images/facebook.webp';
+  static getWhatsAppIcon() => 'assets/images/whatsapp.webp';
+  static getXIcon() => 'assets/images/twitter.webp';
   static getCoin() => 'assets/images/coin.png';
   static getTrophy() => 'assets/images/trophy.png';
   static getWithdrawIcon() => 'assets/images/withdraw.png';

@@ -1,17 +1,15 @@
-import 'package:flip_coin/helper/date.helper.dart';
-import 'package:flip_coin/modules/gameHistory/controller/gameHistory.controller.dart';
+import 'package:flip_coin/modules/referHistory/controller/referHistory.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_scroll_shadow/flutter_scroll_shadow.dart';
 import 'package:get/get.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 import '../../../components/loadingPage/loadingPage.component.dart';
-import '../../../utils/assets.util.dart';
 
-class GameHistoryView extends StatelessWidget {
-  GameHistoryView({super.key});
+class ReferHistoryView extends StatelessWidget {
+  ReferHistoryView({super.key});
 
-  final GameHistoryController gameHistoryController = GameHistoryController();
+  final ReferHistoryController referHistoryController = ReferHistoryController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,26 +52,12 @@ class GameHistoryView extends StatelessWidget {
                       : const SizedBox.shrink(),
                   const SizedBox(width: 10),
                   Text(
-                    "Game History",
+                    "Refer History",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
                       color: context.theme.colorScheme.onSurface,
-                    ),
-                  ),
-                  const Spacer(),
-                  MaterialButton(
-                    onPressed: () => gameHistoryController.onFilterClick(),
-                    minWidth: 0,
-                    padding: EdgeInsets.zero,
-                    visualDensity: VisualDensity.compact,
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    child: Image.asset(
-                      AssetsUtil.getFilterIcon(),
-                      height: 24,
-                      width: 24,
                     ),
                   ),
                 ],
@@ -152,12 +136,12 @@ class GameHistoryView extends StatelessWidget {
                 child: ScrollShadow(
                   child: Obx(
                     () => LazyLoadScrollView(
-                      onEndOfPage: () => gameHistoryController.onScrollEnd(),
+                      onEndOfPage: () => referHistoryController.onScrollEnd(),
                       child: ListView(
                         children: [
-                          gameHistoryController.gameHistoryDataList.isEmpty && !gameHistoryController.isListLoading.value
+                          referHistoryController.gameHistoryDataList.isEmpty && !referHistoryController.isListLoading.value
                               ? Text(
-                                  "No Game History",
+                                  "No Refer History",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 14,
@@ -170,7 +154,7 @@ class GameHistoryView extends StatelessWidget {
                                   shrinkWrap: true,
                                   primary: false,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: gameHistoryController.gameHistoryDataList.length,
+                                  itemCount: referHistoryController.gameHistoryDataList.length,
                                   separatorBuilder: (context, index) => Divider(
                                     height: 20,
                                     color: context.theme.colorScheme.primary,
@@ -178,67 +162,67 @@ class GameHistoryView extends StatelessWidget {
                                   itemBuilder: (context, index) => Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SizedBox(
-                                        width: 45,
-                                        child: Text(
-                                          gameHistoryController.gameHistoryDataList[index].chooseOption == "H" ? "Head" : "Tail",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                            color: context.theme.colorScheme.onSurface,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Flexible(
-                                        child: SizedBox(
-                                          width: double.infinity,
-                                          child: Text(
-                                            "₹${gameHistoryController.truncateToDecimalPlaces(gameHistoryController.gameHistoryDataList[index].joinAmount ?? 0)}",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
-                                              color: context.theme.colorScheme.onSurface,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Flexible(
-                                        child: SizedBox(
-                                          width: double.infinity,
-                                          child: Text(
-                                            "₹${gameHistoryController.truncateToDecimalPlaces(gameHistoryController.gameHistoryDataList[index].winAmount ?? 0)}",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
-                                              color: gameHistoryController.gameHistoryDataList[index].isWin??false ?context.theme.colorScheme.scrim : context.theme.colorScheme.onSurface,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 5),
-                                      SizedBox(
-                                        width: 130,
-                                        child: Text(
-                                          DateHelper().dateFormatNull(date: gameHistoryController.gameHistoryDataList[index].createdAt ?? "", format: "dd MMM yyyy hh:mm a"),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                            color: context.theme.colorScheme.onSurface,
-                                          ),
-                                        ),
-                                      ),
+                                      // SizedBox(
+                                      //   width: 45,
+                                      //   child: Text(
+                                      //     gameHistoryController.gameHistoryDataList[index].chooseOption == "H" ? "Head" : "Tail",
+                                      //     textAlign: TextAlign.center,
+                                      //     style: TextStyle(
+                                      //       fontSize: 12,
+                                      //       fontWeight: FontWeight.w500,
+                                      //       color: context.theme.colorScheme.onSurface,
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      // const SizedBox(width: 5),
+                                      // Flexible(
+                                      //   child: SizedBox(
+                                      //     width: double.infinity,
+                                      //     child: Text(
+                                      //       "₹${gameHistoryController.truncateToDecimalPlaces(gameHistoryController.gameHistoryDataList[index].joinAmount ?? 0)}",
+                                      //       textAlign: TextAlign.center,
+                                      //       style: TextStyle(
+                                      //         fontSize: 12,
+                                      //         fontWeight: FontWeight.w500,
+                                      //         color: context.theme.colorScheme.onSurface,
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      // const SizedBox(width: 5),
+                                      // Flexible(
+                                      //   child: SizedBox(
+                                      //     width: double.infinity,
+                                      //     child: Text(
+                                      //       "₹${gameHistoryController.truncateToDecimalPlaces(gameHistoryController.gameHistoryDataList[index].winAmount ?? 0)}",
+                                      //       textAlign: TextAlign.center,
+                                      //       style: TextStyle(
+                                      //         fontSize: 12,
+                                      //         fontWeight: FontWeight.w500,
+                                      //         color: gameHistoryController.gameHistoryDataList[index].isWin ?? false ? context.theme.colorScheme.scrim : context.theme.colorScheme.onSurface,
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      // const SizedBox(width: 5),
+                                      // SizedBox(
+                                      //   width: 130,
+                                      //   child: Text(
+                                      //     DateHelper().dateFormatNull(date: gameHistoryController.gameHistoryDataList[index].createdAt ?? "", format: "dd MMM yyyy hh:mm a"),
+                                      //     textAlign: TextAlign.center,
+                                      //     style: TextStyle(
+                                      //       fontSize: 12,
+                                      //       fontWeight: FontWeight.w500,
+                                      //       color: context.theme.colorScheme.onSurface,
+                                      //     ),
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 ),
                           Obx(
                             () => Visibility(
-                              visible: gameHistoryController.isListLoading.value,
+                              visible: referHistoryController.isListLoading.value,
                               child: LoadingPage.listLoading(),
                             ),
                           ),

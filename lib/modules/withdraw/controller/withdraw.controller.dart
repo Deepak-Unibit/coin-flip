@@ -119,6 +119,21 @@ class WithdrawController extends GetxController {
       }
     }
 
+    if (int.parse(amountController.text) < 500) {
+      SnackBarHelper.show("Minimum withdraw amount is 500");
+      return;
+    }
+
+    if (int.parse(amountController.text) > 50000) {
+      SnackBarHelper.show("Maximum withdraw amount is 50000");
+      return;
+    }
+
+    if (int.parse(amountController.text) > (dataService.coinData.value.winCoin??0)) {
+      SnackBarHelper.show("Withdraw amount is more than win coin.");
+      return;
+    }
+
     Map<String, dynamic> data = {
       "accountId": selectedAccount.value,
       "amount": amountController.text,
@@ -128,14 +143,12 @@ class WithdrawController extends GetxController {
     var resp = await ApiCall.post(UrlApi.withdrawCoin, data);
     LoadingPage.close();
 
-
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
-    if(responseModel.responseCode == 200) {
+    if (responseModel.responseCode == 200) {
       SnackBarHelper.show(responseModel.message);
       dataService.getCoins();
-    }
-    else {
+    } else {
       SnackBarHelper.show(responseModel.message);
     }
     return;
@@ -144,5 +157,4 @@ class WithdrawController extends GetxController {
   double truncateToDecimalPlaces(num value) {
     return (value * 100).truncateToDouble() / 100;
   }
-
 }

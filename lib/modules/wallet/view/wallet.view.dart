@@ -45,7 +45,6 @@ class WalletView extends StatelessWidget {
                           visualDensity: VisualDensity.compact,
                           highlightColor: Colors.transparent,
                           splashColor: Colors.transparent,
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           child: Icon(
                             Icons.arrow_back,
                             size: 20,

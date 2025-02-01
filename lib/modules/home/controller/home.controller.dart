@@ -39,7 +39,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   // Others
   TextEditingController amountController = TextEditingController(text: "10");
   RxInt selectedType = 0.obs;
-  List<int> amountList = [50, 100, 200, 500, 1000];
+  List<int> amountList = [50, 100, 200, 500, 1000, 5000];
   int selectedAmount = 10;
   List<int> roundList = [10, 100, 500, 1000, 5000, 10000];
   RxInt selectedRound = 10.obs;
@@ -63,8 +63,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
       // Development
       // UserModel userModel = UserModel(
-      //   id: 12,
-      //   // id: 1146609300,
+      //   // id: 12,
+      //   id: 114660930055,
       //   firstName: "New3 Kumar",
       //   lastName: "Behera",
       //   allowsWriteToPm: true,
@@ -112,22 +112,28 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   void decreaseAmount() {
     selectedAmount = int.parse(amountController.text);
+    if (selectedAmount - 1 <= 0) {
+      return;
+    }
+
     if (selectedAmount <= 10) {
-      return;
+      selectedAmount = selectedAmount - 1;
+    } else {
+      selectedAmount = selectedAmount - 10;
     }
-    if (selectedAmount-1 <= 0) {
-      return;
-    }
-    selectedAmount = selectedAmount - 10;
+
     amountController.text = "$selectedAmount";
   }
 
   void increaseAmount() {
     selectedAmount = int.parse(amountController.text);
-    if (selectedAmount >= 5000) {
-      return;
+    if (selectedAmount + 10 >= 5000) {
+      selectedAmount = 5000;
+    } else if (selectedAmount < 10) {
+      selectedAmount = selectedAmount + 1;
+    } else {
+      selectedAmount = selectedAmount + 10;
     }
-    selectedAmount = selectedAmount + 10;
     amountController.text = "$selectedAmount";
   }
 
@@ -314,6 +320,16 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       return;
     }
 
+    if (int.parse(addCoinController.text) < 300) {
+      SnackBarHelper.show("Minimum deposit amount in 300");
+      return;
+    }
+
+    if (int.parse(addCoinController.text) > 50000) {
+      SnackBarHelper.show("Maximum deposit amount in 50000");
+      return;
+    }
+
     LoadingPage.show();
     var resp = await ApiCall.get("${UrlApi.depositCoin}/${addCoinController.text}");
     LoadingPage.close();
@@ -329,14 +345,21 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  void onCopyClick() {
-    html.window.navigator.clipboard
-        ?.writeText("https://t.me/Wheel24Bot?start=ReferralCode \n\n🎁I've won ₹500 from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
-        .then((_) {
-      SnackBarHelper.show("Copied to Clipboard");
-    }).catchError((e) {
-      print("Failed to copy text to clipboard: $e");
-    });
+  void onShareClick(int index) {
+    String message = "https://t.me/Wheel24Bot?start=${profileData.value.referCode ?? ""} \n\n🎁I've won ₹500 from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
+
+    if (index == 0) {
+      final String whatsappUrl = 'https://wa.me/?text=${Uri.encodeComponent(message)}';
+      UrlLauncherHelper.launchLink(whatsappUrl);
+    } else if (index == 1) {
+      final String twitterUrl = 'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(message)}';
+      UrlLauncherHelper.launchLink(twitterUrl);
+    } else if (index == 2) {
+      final String facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(message)}';
+      UrlLauncherHelper.launchLink(facebookUrl);
+    } else {
+     UrlLauncherHelper.launchLink(message);
+    }
   }
 
   double truncateToDecimalPlaces(num value) {

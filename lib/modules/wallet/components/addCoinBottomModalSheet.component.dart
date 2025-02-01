@@ -50,7 +50,6 @@ class AddCoinBottomModalSheetComponent {
                   visualDensity: VisualDensity.compact,
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   child: Icon(
                     Icons.close,
                     size: 20,
@@ -68,9 +67,18 @@ class AddCoinBottomModalSheetComponent {
                     textEditingController: addCoinController,
                     hintText: "Add Coin",
                     textInputType: TextInputType.number,
-                    maxLength: 8,
+                    maxLength: 5,
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 5),
+                  Text(
+                    "Minimum deposit amount : ₹300",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: context.theme.colorScheme.scrim,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   Wrap(
                     spacing: 10,
                     children: amountList

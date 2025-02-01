@@ -131,10 +131,19 @@ class WalletController extends GetxController {
       return;
     }
 
+    if(int.parse(addCoinController.text) < 300) {
+      SnackBarHelper.show("Minimum deposit amount in 300");
+      return;
+    }
+
+    if(int.parse(addCoinController.text) > 50000) {
+      SnackBarHelper.show("Maximum deposit amount in 50000");
+      return;
+    }
+
     LoadingPage.show();
     var resp = await ApiCall.get("${UrlApi.depositCoin}/${addCoinController.text}");
     LoadingPage.close();
-    print(resp);
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
