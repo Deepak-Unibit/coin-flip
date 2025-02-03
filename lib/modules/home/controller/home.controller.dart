@@ -13,7 +13,6 @@ import 'package:flip_coin/utils/routes.util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:js' as js;
-import 'dart:html' as html;
 import '../../../api/call.api.dart';
 import '../../../api/url.api.dart';
 import '../../../components/loadingPage/loadingPage.component.dart';
@@ -33,20 +32,23 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   AnimationController? get controller => _controller.value;
   late Animation animation;
   AnimationStatus status = AnimationStatus.dismissed;
-  RxInt resultCoin = 0.obs;
-  RxBool showConfetti = false.obs;
 
-  // Others
+  // Your Bet
   TextEditingController amountController = TextEditingController(text: "10");
   RxInt selectedType = 0.obs;
   List<int> amountList = [50, 100, 200, 500, 1000, 5000];
   int selectedAmount = 10;
+
+  // Auto Play
   List<int> roundList = [10, 100, 500, 1000, 5000, 10000];
-  RxInt selectedRound = 10.obs;
   RxBool cashDecreaseSwitch = false.obs;
   RxBool singleWinSwitch = false.obs;
+  RxInt selectedRound = 10.obs;
   RxInt cashDecreaseAmount = 0.obs;
   RxInt singleWinAmount = 0.obs;
+
+  // Demo Mode
+  RxBool isDemoMode = false.obs;
 
   @override
   void onInit() {
@@ -55,20 +57,20 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      // var state = js.JsObject.fromBrowserObject(js.context['state']);
-      // Map<String, dynamic> userData = jsonDecode(state['userData']);
-      // UserModel userModel = UserModel.fromJson(userData);
+      var state = js.JsObject.fromBrowserObject(js.context['state']);
+      Map<String, dynamic> userData = jsonDecode(state['userData']);
+      UserModel userModel = UserModel.fromJson(userData);
 
-      // print(userData);
+      print(userData);
 
       // Development
-      UserModel userModel = UserModel(
-        // id: 12,
-        id: 114660930055,
-        firstName: "New3 Kumar",
-        lastName: "Behera",
-        allowsWriteToPm: true,
-      );
+      // UserModel userModel = UserModel(
+      //   // id: 12,
+      //   id: 114660930055,
+      //   firstName: "New3 Kumar",
+      //   lastName: "Behera",
+      //   allowsWriteToPm: true,
+      // );
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
         Future.delayed(200.milliseconds, () => login(userModel));
       }
@@ -124,6 +126,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     RoutesUtil.to(() => GameHistoryView());
   }
 
+  // Your Bet
   void decreaseAmount() {
     selectedAmount = int.parse(amountController.text);
     if (selectedAmount - 1 <= 0) {
@@ -160,6 +163,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     selectedType.value = value;
   }
 
+  // Game
   RxBool isFlipping = false.obs;
   RxBool showLottie = true.obs;
   Future<void> onFlipCoin() async {
@@ -265,6 +269,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       onIncreaseCashDecrease: increaseCashDecreaseAmount,
       onDecreaseSingleWin: decreaseSingleWinAmount,
       onIncreaseSingleWin: increaseSingleWinAmount,
+      onStartAutoPlay: startAutoPlay,
     );
   }
 
@@ -308,10 +313,28 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     singleWinAmount.value = singleWinAmount.value + 10;
   }
 
+  void startAutoPlay() {
+    while (selectedRound.value > 0) {
+      selectedRound.value--;
+    }
+  }
+
+  // Refer
   void onReferClick() {
     RoutesUtil.to(() => ReferView());
   }
 
+  // Demo Game
+  void switchMode() {
+    isDemoMode.value = !isDemoMode.value;
+    if (isDemoMode.value) {
+      totalAmount.value = (dataService.coinData.value.demoCoin ?? 0) as double;
+    } else {
+      totalAmount.value = (dataService.coinData.value.totalCoin ?? 0) as double;
+    }
+  }
+
+  // Add Coin
   void addCoin() {
     addCoinController.text = "300";
     AddCoinBottomModalSheetComponent.show(
@@ -360,7 +383,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void onShareClick(int index) {
-    String message = "https://t.me/Wheel24Bot?start=${profileData.value.referCode ?? ""} \n\n🎁I've won ₹500 from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
+    String message = "https://t.me/CoiflipBot?start=${profileData.value.referCode ?? ""} \n\n🎁I've won ₹500 from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
 
     if (index == 0) {
       final String whatsappUrl = 'https://wa.me/?text=${Uri.encodeComponent(message)}';
@@ -373,7 +396,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       UrlLauncherHelper.launchLink(facebookUrl);
     } else {
       final String telegramUrl =
-          "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${profileData.value.referCode ?? ""}} %0A%0A🎁I've won ₹500 from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+          "https://t.me/share/url?url=https://t.me/CoiflipBot?start=${profileData.value.referCode ?? ""}} %0A%0A🎁I've won ₹500 from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
       UrlLauncherHelper.launchLink(telegramUrl);
     }
   }

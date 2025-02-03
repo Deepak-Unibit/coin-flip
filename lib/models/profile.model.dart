@@ -48,6 +48,7 @@ class ProfileData {
     String? userName,
     num? winCoin,
     num? gameCoin,
+    num? demoCoin,
     num? status,
     String? referCode,
     num? referEarn,
@@ -64,6 +65,7 @@ class ProfileData {
     _userName = userName;
     _winCoin = winCoin;
     _gameCoin = gameCoin;
+    _demoCoin = demoCoin;
     _status = status;
     _referCode = referCode;
     _referEarn = referEarn;
@@ -82,6 +84,7 @@ class ProfileData {
     _userName = json['userName'];
     _winCoin = json['winCoin'];
     _gameCoin = json['gameCoin'];
+    _demoCoin = json['demoCoin'];
     _status = json['status'];
     _referCode = json['referCode'];
     _referEarn = json['referEarn'];
@@ -98,6 +101,7 @@ class ProfileData {
   String? _userName;
   num? _winCoin;
   num? _gameCoin;
+  num? _demoCoin;
   num? _status;
   String? _referCode;
   num? _referEarn;
@@ -114,6 +118,7 @@ class ProfileData {
   String? get userName => _userName;
   num? get winCoin => _winCoin;
   num? get gameCoin => _gameCoin;
+  num? get demoCoin => _demoCoin;
   num? get status => _status;
   String? get referCode => _referCode;
   num? get referEarn => _referEarn;
@@ -132,6 +137,7 @@ class ProfileData {
     map['userName'] = _userName;
     map['winCoin'] = _winCoin;
     map['gameCoin'] = _gameCoin;
+    map['demoCoin'] = _demoCoin;
     map['status'] = _status;
     map['referCode'] = _referCode;
     map['referEarn'] = _referEarn;

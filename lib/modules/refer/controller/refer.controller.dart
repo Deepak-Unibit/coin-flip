@@ -12,14 +12,14 @@ class ReferController extends GetxController {
 
   void onInvite() {
     String telegramLink =
-        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${dataService.profileData.referCode??""} %0A%0A🎁I've won ₹500 from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+        "https://t.me/share/url?url=https://t.me/CoiflipBot?start=${dataService.profileData.referCode??""} %0A%0A🎁I've won ₹500 from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     UrlLauncherHelper.launchLink(telegramLink);
   }
 
   void onCopyClick() {
     html.window.navigator.clipboard
-        ?.writeText("https://t.me/Wheel24Bot?start=ReferralCode \n\n🎁I've won ₹500 from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
+        ?.writeText("https://t.me/CoiflipBot?start=ReferralCode \n\n🎁I've won ₹500 from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
         .then((_) {
       SnackBarHelper.show("Copied to Clipboard");
     }).catchError((e) {

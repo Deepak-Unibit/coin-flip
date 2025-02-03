@@ -18,6 +18,9 @@ class UrlApi {
   static const flipCoin = "$baseUrl/api/v1/games/play";
   static const getGameHistory = "$baseUrl/api/v1/games/history";
 
+  // Demo
+  static const demoFlipCoin = "$baseUrl/api/v1/games/play-demo";
+
   // History
   static const getReferHistory = "$baseUrl/api/v1/users/refer-list";
 

@@ -21,6 +21,7 @@ class AutoPlayDialogComponent {
     required Function onIncreaseCashDecrease,
     required Function onDecreaseSingleWin,
     required Function onIncreaseSingleWin,
+    required Function onStartAutoPlay,
   }) {
     return showDialog(
       context: Get.context!,
@@ -365,7 +366,7 @@ class AutoPlayDialogComponent {
                 ),
                 const SizedBox(height: 30),
                 PrimaryButtonComponent(
-                  onClick: () {},
+                  onClick: () => onStartAutoPlay(),
                   text: "Start Auto",
                   width: double.infinity,
                   fontSize: 18,

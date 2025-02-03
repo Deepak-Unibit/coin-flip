@@ -44,11 +44,13 @@ class CoinData {
     String? id,
     num? winCoin,
     num? gameCoin,
+    num? demoCoin,
     num? totalCoin,
   }) {
     _id = id;
     _winCoin = winCoin;
     _gameCoin = gameCoin;
+    _demoCoin = demoCoin;
     _totalCoin = totalCoin;
   }
 
@@ -56,16 +58,19 @@ class CoinData {
     _id = json['_id'];
     _winCoin = json['winCoin'];
     _gameCoin = json['gameCoin'];
+    _demoCoin = json['demoCoin'];
     _totalCoin = json['totalCoin'];
   }
   String? _id;
   num? _winCoin;
   num? _gameCoin;
+  num? _demoCoin;
   num? _totalCoin;
 
   String? get id => _id;
   num? get winCoin => _winCoin;
   num? get gameCoin => _gameCoin;
+  num? get demoCoin => _demoCoin;
   num? get totalCoin => _totalCoin;
 
   Map<String, dynamic> toJson() {
@@ -73,6 +78,7 @@ class CoinData {
     map['_id'] = _id;
     map['winCoin'] = _winCoin;
     map['gameCoin'] = _gameCoin;
+    map['demoCoin'] = _demoCoin;
     map['totalCoin'] = _totalCoin;
     return map;
   }
